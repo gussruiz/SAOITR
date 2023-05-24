@@ -3,15 +3,11 @@ const app  = express();
 const path = require('path');
 const cors = require('cors');
 const corsOptions =  require('./config/corsOptions');
-const {logger} = require('./middleware/logEvents');
-const errorHandler = require('./middleware/errorHandler');
 const verifyJWT =  require('./middleware/verifyJWT');
 const cookieParser =  require('cookie-parser');
 const credentials = require('./middleware/credentials');
-const PORT = process.env.PORT || 3500;
+const PORT = process.env.PORT || 4444;
 
-//custom middleware logger
-app.use(logger);
 
 //handle options creedntials check - before CORS!
 //and fetch cookies credentials requirement
@@ -49,6 +45,5 @@ app.all('*', (req, res) => {
     }
 });
 
-app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

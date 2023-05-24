@@ -7,13 +7,13 @@ const USER_REGEX = /^.{2,10}$/i;
 const PWD_REGEX = /^.{2,125}$/i;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]{2,125}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
 
-const REGUISTER_URL = '/users/';
+const REGISTER_URL = '/users';
 
 const Register = () => {
 	const userRef = useRef();
 	const errRef = useRef();
 
-	const [user, setUser] = useState('');
+	const [name, setUser] = useState('');
 	const [validName, setValidName] = useState(false);
 	const [userFocus, setUserFocus] = useState(false);
 
@@ -22,7 +22,7 @@ const Register = () => {
 	const [emailFocus, setEmailFocus] = useState(false);
 
 
-	const [pwd, setPwd] = useState('');
+	const [password, setPwd] = useState('');
 	const [validPwd, setValidPwd] = useState(false);
 	const [pwdFocus, setPwdFocus] = useState(false);
 
@@ -38,9 +38,9 @@ const Register = () => {
 	}, []);
 
 	useEffect(() => {
-		const result = USER_REGEX.test(user);
+		const result = USER_REGEX.test(name);
 		setValidName(result);
-	}, [user]);
+	}, [name]);
 
 	useEffect(() => {
 		const result = EMAIL_REGEX.test(email);
@@ -48,22 +48,22 @@ const Register = () => {
 	}, [email]);
 
 	useEffect(() => {
-		const result = PWD_REGEX.test(pwd);
+		const result = PWD_REGEX.test(password);
 		setValidPwd(result);
-		const match = pwd === matchPwd;
+		const match = password === matchPwd;
 		setValidMatch(match)
-	}, [pwd, matchPwd]);
+	}, [password, matchPwd]);
 
 	useEffect(() => {
 		setErrMsg('');
-	}, [user, pwd, matchPwd]);
+	}, [name, password, matchPwd]);
 
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		//if button enabled woth js hack
-		const v1 = USER_REGEX.test(user);
-		const v2 = PWD_REGEX.test(pwd);
+		const v1 = USER_REGEX.test(name);
+		const v2 = PWD_REGEX.test(password);
 		const v3 = EMAIL_REGEX.test(email);
 
 		if (!v1 || !v2 || !v3) {
@@ -73,11 +73,11 @@ const Register = () => {
 		// console.log(user, pwd, email);
 		// setSucess(true);
 		try {
-			const response = await axios.post(REGUISTER_URL, 
-				JSON.stringify({ user, pwd, email }), 
+			const response = await axios.post(REGISTER_URL,
+				JSON.stringify({name, email, password }),
 				{
-					headers: {'Content-Type': 'application/json'},
-					withCredentials: true
+					headers: { 'Content-Type': 'application/json' },
+					
 				}
 			);
 			console.log(response.data);
@@ -121,7 +121,7 @@ const Register = () => {
 									<span className={validName ? "valid" : "hide"}>
 										<FontAwesomeIcon icon={faCheck} />
 									</span>
-									<span className={validName || !user ? "hide" : "invalid"}>
+									<span className={validName || !name ? "hide" : "invalid"}>
 										<FontAwesomeIcon icon={faTimes} />
 									</span>
 								</label>
@@ -139,7 +139,7 @@ const Register = () => {
 									onBlur={() => setUserFocus(false)}
 								/>
 
-								<p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
+								<p id="uidnote" className={userFocus && name && !validName ? "instructions" : "offscreen"}>
 									<FontAwesomeIcon icon={faInfoCircle} />
 									2 to 10 characters.<br />
 									Letters, numbers, underscores, hyphens allowed.
@@ -185,7 +185,7 @@ const Register = () => {
 									<span className={validPwd ? "valid" : "hide"}>
 										<FontAwesomeIcon icon={faCheck} />
 									</span>
-									<span className={validPwd || !pwd ? "hide" : "invalid"}>
+									<span className={validPwd || !password ? "hide" : "invalid"}>
 										<FontAwesomeIcon icon={faTimes} />
 									</span>
 								</label>
@@ -201,7 +201,7 @@ const Register = () => {
 									onBlur={() => setPwdFocus(false)}
 								/>
 
-								<p id="pwdnote" className={pwdFocus && pwd && !validPwd ? "instructions" : "offscreen"}>
+								<p id="pwdnote" className={pwdFocus && password && !validPwd ? "instructions" : "offscreen"}>
 									<FontAwesomeIcon icon={faInfoCircle} />
 									2 to 125 characters.<br />
 									Recomend to include uppercase and lowercase letters, a number and a special character.<br />
