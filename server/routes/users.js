@@ -7,7 +7,7 @@ const logoutController =  require('../controllers/userController');
 const authController =  require('../controllers/userController');
 
 router.post('/users', registerController.handleNewUser);
-router.post('/login', verifyJWT, authController.handleLogin);
+router.post('/login', authController.handleLogin);
 router.get('/logout', verifyJWT, logoutController.handleLogout);
 
 module.exports = router;

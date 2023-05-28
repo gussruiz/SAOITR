@@ -17,7 +17,7 @@ const handleNewUser = async (req, res) => {
 
     //check duplicate usernames in the db
     const duplicate =  usersDB.users.find(person => person.email === email);
-    if(duplicate) return res.status(409);
+    if(duplicate) return res.status(409).json({message: "E-mail já cadastrado"});
 
     try {
         //encrypt the password
@@ -25,7 +25,7 @@ const handleNewUser = async (req, res) => {
         //store the new user
         const newUser =  {
             "id": uuid(),
-            "username": user,
+            "name": user,
             "email": email,  
             "password": hashedPassword
         };
@@ -35,26 +35,59 @@ const handleNewUser = async (req, res) => {
             JSON.stringify(usersDB.users)
         );
         console.log(usersDB.users);
-        res.status(201).json({"sucess": `New user ${user} cerated`});
+        res.status(201).json({
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email
+        });
     } catch (err) {
         res.status(500).json({ 'message': err.message });
     }
 }
 
-//logout
-const handleLogout = async (req, res) => {
-    // On client, aslo delete the access Token
+//login
+const handleLogin = async (req, res) => {
+    const {email, password} =  req.body;
+    if (!email || !password) return res.status(400).json({'message': 'email and password are required'});
 
-    const cookies =  req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(204); // no content to send back
-    const refreshToken =  cookies.jwt;
-    
-    // is refreshToken in db? 
-    const foundUser = usersDB.users.find(person => person.refreshToken === refreshToken);
-    if(!foundUser) {
-        res.clearCookie('jwt', {httpOnly: true});
-        return res.sendStatus(204);
-    }
+    const foundUser = usersDB.users.find(person => person.email === email);
+    if(!foundUser) return res.sendStatus(401).json({message: "Essas credenciais não correspondem aos nossos registros. -- USUÁRIO NÃ0 ENCONTRADO"}); //Unauthorized
+
+    //evaluate password
+    const match = await bcrypt.compare(password, foundUser.password);
+    if(!match) return res.sendStatus(401).json({message: "Essas credenciais não correspondem aos nossos registros. -- SENHA INCORRETA"}); //Unauthorized
+
+    const secret = process.env.ACCESS_TOKEN_SECRET;
+
+    //create a JWTs
+    const accessToken = jwt.sign({ 
+            exp: '1h',
+            id: foundUser.id
+        },
+        secret
+    );
+
+    //saving resfresehToken with current user
+    const otherUsers =  usersDB.users.filter(person => person.email !== foundUser.email);
+    const currentUser = {...foundUser, refreshToken};
+    usersDB.setUsers([...otherUsers, currentUser]);
+    await fsPromises.writeFile(
+        path.join(__dirname, '..', 'model', 'users.json'),
+        JSON.stringify(usersDB.users)
+    );
+
+    res.status(200).json({
+        id: foundUser.id,
+        name: foundUser.name,
+        email: foundUser.email,
+        token: accessToken
+    });
+}
+
+
+//logout
+const handleLogout = async (req, res) => {    
+
 
     //delete  refreshToken in DB 
     const otherUsers = usersDB.users.filter(person => person.refreshToken !== foundUser.refreshToken);
@@ -70,44 +103,6 @@ const handleLogout = async (req, res) => {
  
 }
 
-//login
-const handleLogin = async (req, res) => {
-    const {email, password} =  req.body;
-    if (!email || !password) return res.status(400).json({'message': 'email name and password are required'});
-
-    const foundUser = usersDB.users.find(person => person.email === email);
-    if(!foundUser) return res.sendStatus(401); //Unauthorized
-
-    //evaluate password
-    const match = await bcrypt.compare(password, foundUser.password);
-    if(match){
-        const roles =  Object.values(foundUser.roles).filter(Boolean);
-        //create a JWTs
-        const accessToken = jwt.sign(
-            { 
-                "UserInfo": {
-                    "email": foundUser.email,
-                }
-            },
-            process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '15min' }
-        );
-
-        //saving resfresehToken with current user
-        const otherUsers =  usersDB.users.filter(person => person.email !== foundUser.email);
-        const currentUser = {...foundUser, refreshToken};
-        usersDB.setUsers([...otherUsers, currentUser]);
-        await fsPromises.writeFile(
-            path.join(__dirname, '..', 'model', 'users.json'),
-            JSON.stringify(usersDB.users)
-        );
-        
-        res.cookie('jwt', refreshToken, {httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000});
-        res.json({accessToken });
-    } else {
-        res.sendStatus(401);
-    }
-}
 
 module.exports = { 
     handleNewUser,
