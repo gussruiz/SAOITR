@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import axios from '../../api/axios';
 import './Login.css'
 
@@ -12,8 +12,6 @@ const Login = () => {
     const { setAuth } = useAuth();
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
 
     const emailRef = useRef();
     const errRef = useRef();
@@ -45,7 +43,7 @@ const Login = () => {
             setAuth({ email, password, token });
             setEmail('');
             setPassword('');
-            navigate('/', { replace: true });
+            navigate('/linkpage', { replace: true });
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No server response');

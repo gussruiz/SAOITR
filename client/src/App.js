@@ -5,7 +5,7 @@ import Layout from "./components/Layout";
 import Admin from "./components/Admin";
 import Missing from "./components/Missing";
 import Unauthorized from "./components/Unauthorized";
-import LinkPage from "./components/LinkPage";
+import LinkPage from "./components/LinkPage/LinkPage";
 import RequireAuth from "./components/RequireAuth";
 
 import { Routes, Route } from "react-router-dom";
