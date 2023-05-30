@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from '../../api/axios';
+import { Link } from "react-router-dom";
 import './Register.css'
 
 const USER_REGEX = /^.{2,10}$/i;
@@ -90,7 +91,7 @@ const Register = () => {
 			if(!err?.response) {
 				setErrMsg('No server response');
 			} else if(err.response?.status === 409) {
-				setErrMsg('Username Taken')
+				setErrMsg('E-mail Taken')
 			} else {
 				setErrMsg('Registration Failed');
 			}
@@ -104,7 +105,7 @@ const Register = () => {
 				<section>
 					<h1>Sucsess!</h1>
 					<p>
-						<a href='#'>Sing In</a>
+						<Link to="/login">Sing In</Link>
 					</p>
 				</section>
 			) : (
@@ -254,7 +255,7 @@ const Register = () => {
 										Already registerd? <br />
 										<span className="Line">
 											{/* put rourter link here*/}
-											<a href="#">Sing In</a> {/*Placeholder link*/}
+											<Link to="/login">Sing In</Link>
 										</span>
 									</p>
 								</>

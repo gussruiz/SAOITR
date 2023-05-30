@@ -102,7 +102,7 @@ const Login = () => {
                 <p>
                     Need an Account? <br />
                     <span className='line'>
-                        <a href='#'>Sing In</a>
+                        <Link to="/register">Sing Up</Link>
                     </span>
                 </p>
             </form>
