@@ -18,7 +18,7 @@ const Login = () => {
     const emailRef = useRef();
     const errRef = useRef();
 
-    const [pwd, setPwd] = useState('');
+    const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
@@ -28,25 +28,24 @@ const Login = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [email, pwd])
+    }, [email, password])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ email, password: pwd }), 
+                JSON.stringify({ email, password }), 
                 {
                     headers: { 'Content-Type': 'application/json' },
                 }
             );
             console.log(JSON.stringify(response?.data));
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
-            setAuth({ email, pwd, roles, accessToken });
+            const token = response?.data?.tToken;
+            setAuth({ email, password, token });
             setEmail('');
-            setPwd('');
-            navigate(from, { replace: true });
+            setPassword('');
+            navigate('/', { replace: true });
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No server response');
@@ -90,8 +89,8 @@ const Login = () => {
                 <input
                     type='password'
                     id='password'
-                    onChange={(e) => setPwd(e.target.value)}
-                    value={pwd}
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
                     required
                     placeholder='Password'
                     className='inputLogin'

@@ -102,12 +102,16 @@ const Register = () => {
 	return (
 		<>
 			{sucess ? (
-				<section>
-					<h1>Sucsess!</h1>
-					<p>
-						<Link to="/login">Sing In</Link>
-					</p>
-				</section>
+				<>
+					<div className="backgroundRegister">
+						<div className="shapeRegister"></div>
+						<div className="shapeRegister"></div>
+					</div>
+					<section className="successMsg">
+						<h1 className="successMsg_title" >Welcome to Saotir</h1>
+						<Link className="successMsg_link" to="/login">Sing In</Link>
+					</section>
+				</>
 			) : (
 				<>
 					<div className="backgroundRegister">
