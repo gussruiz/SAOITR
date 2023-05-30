@@ -109,7 +109,7 @@ const Register = () => {
 				</section>
 			) : (
 				<>
-					<div className="background">
+					<div className="backgroundRegister">
 						<div className="shapeRegister"></div>
 						<div className="shapeRegister"></div>
 					</div>
@@ -117,9 +117,9 @@ const Register = () => {
 						<p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive" >{errMsg}</p>
 							<form className="formRegister" onSubmit={handleSubmit}>
 								<h2>Sing Up</h2>	
-								{/* input username */}
 								<>
-									<label htmlFor="username">
+									{/* input username */}	
+									<label htmlFor="username" className="labelRegister">
 										Username:
 										<span className={validName ? "valid" : "hide"}>
 											<FontAwesomeIcon icon={faCheck} />
@@ -141,6 +141,7 @@ const Register = () => {
 										onFocus={() => setUserFocus(true)}
 										onBlur={() => setUserFocus(false)}
 										placeholder="Name"
+										className="inputRegister"
 									/>
 
 									<p id="uidnote" className={userFocus && name && !validName ? "instructions" : "offscreen"}>
@@ -152,7 +153,7 @@ const Register = () => {
 
 								{/* input email */}
 								<>
-									<label htmlFor="email">
+									<label htmlFor="email" className="labelRegister">
 										E-mail:
 										<span className={validEmail ? "valid" : "hide"}>
 											<FontAwesomeIcon icon={faCheck} />
@@ -174,6 +175,7 @@ const Register = () => {
 										onFocus={() => setEmailFocus(true)}
 										onBlur={() => setEmailFocus(false)}
 										placeholder="E-mail"
+										className="inputRegister"
 									/>
 
 									<p id="eidnote" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
@@ -185,7 +187,7 @@ const Register = () => {
 
 								{/* input password */}
 								<>
-									<label htmlFor="password">
+									<label htmlFor="password" className="labelRegister">
 										Password:
 										<span className={validPwd ? "valid" : "hide"}>
 											<FontAwesomeIcon icon={faCheck} />
@@ -205,6 +207,7 @@ const Register = () => {
 										onFocus={() => setPwdFocus(true)}
 										onBlur={() => setPwdFocus(false)}
 										placeholder="Password"
+										className="inputRegister"
 									/>
 
 									<p id="pwdnote" className={pwdFocus && password && !validPwd ? "instructions" : "offscreen"}>
@@ -214,7 +217,7 @@ const Register = () => {
 										Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
 									</p>
 
-									<label htmlFor="confirm_pwd">
+									<label htmlFor="confirm_pwd" className="labelRegister">
 										Confirm Password:
 										<span className={validMatch && matchPwd ? "valid" : "hide"}>
 											<FontAwesomeIcon icon={faCheck} />
@@ -235,6 +238,7 @@ const Register = () => {
 										onFocus={() => setMatchFocus(true)}
 										onBlur={() => setMatchFocus(false)}
 										placeholder="Confirm your password"
+										className="inputRegister"
 									/>
 
 									<p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
@@ -242,7 +246,7 @@ const Register = () => {
 										Must macth the first password field<br />
 									</p>
 									
-									<button disabled={!validName || !validPwd || !validMatch || !validEmail ? true : false}>
+									<button disabled={!validName || !validPwd || !validMatch || !validEmail ? true : false} className="buttonRegister">
 										Sign Up
 									</button>
 

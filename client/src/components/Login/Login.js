@@ -63,17 +63,17 @@ const Login = () => {
 
     return (
         <section>
-            <div className="background">
-                <div className="shape"></div>
-                <div className="shape"></div>
+            <div className="backgroundLogin">
+                <div className="shapeLogin"></div>
+                <div className="shapeLogin"></div>
             </div>
             <p ref={errRef} className={errMsg ? "errMsg" : "offscreen"} aria-live='assertive'>
                 {errMsg}
             </p>
 
-            <form onSubmit={handleSubmit}>
-            <h2>Sing In</h2>
-                <label htmlFor='email'>E-mail:</label>
+            <form onSubmit={handleSubmit} className='formLogin'>
+            <h3>Sing In</h3>
+                <label htmlFor='email' className='labelLogin'>E-mail:</label>
                 <input
                     type='text'
                     id='email'
@@ -82,18 +82,22 @@ const Login = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                     required
+                    placeholder='E-mail'
+                    className='inputLogin'
                 />
 
-                <label htmlFor='password'>Password:</label>
+                <label htmlFor='password' className='labelLogin'>Password:</label>
                 <input
                     type='password'
                     id='password'
                     onChange={(e) => setPwd(e.target.value)}
                     value={pwd}
                     required
-                    />
+                    placeholder='Password'
+                    className='inputLogin'
+                />
 
-                <button>Sing In</button>
+                <button className='buttonLogin'>Sing In</button>
 
                 <p>
                     Need an Account? <br />

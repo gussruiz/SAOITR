@@ -2,7 +2,7 @@ body{
     background-color: #080710;
 }
 
-.background{
+.backgroundLogin{
     width: 430px;
     height: 520px;
     position: absolute;
@@ -11,13 +11,13 @@ body{
     top: 50%;
 }
 
-.background .shape{
+.backgroundLogin .shapeLogin{
     height: 200px;
     width: 200px;
     position: absolute;
     border-radius: 50%;
 }
-.shape:first-child{
+.shapeLogin:first-child{
     background: linear-gradient(
         #99B898,
         #2A363B 
@@ -25,7 +25,7 @@ body{
     left: -80px;
     top: -80px;
 }
-.shape:last-child{
+.shapeLogin:last-child{
     background: linear-gradient(
         to right,
         #45ADA8,
@@ -35,7 +35,7 @@ body{
     bottom: -80px;
 }
 
-form{
+.formLogin{
     height: 520px;
     width: 400px;
     background-color: rgba(255,255,255,0.13);
@@ -49,7 +49,7 @@ form{
     box-shadow: 0 0 40px rgba(8,7,16,0.6);
     padding: 50px 35px;
 }
-form *{
+.formLogin *{
     font-family: 'Poppins',sans-serif;
     color: #ffffff;
     letter-spacing: 0.5px;
@@ -57,7 +57,7 @@ form *{
     border: none;
 }
 
-form h3{
+.formLogin h3{
     font-size: 32px;
     font-weight: 500;
     line-height: 42px;
@@ -71,7 +71,7 @@ label{
     font-weight: 500;
 }
 
-input{
+.inputLogin{
     display: block;
     height: 50px;
     width: 100%;
@@ -87,7 +87,7 @@ input{
     color: #e5e5e5;
 }
 
-button{
+.buttonLogin{
     margin-top: 50px;
     width: 100%;
     background-color: #ffffff;

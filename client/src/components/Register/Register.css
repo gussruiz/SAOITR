@@ -2,7 +2,7 @@ body{
     background-color: #080710;
 }
 
-.background{
+.backgroundRegister{
     width: 430px;
     height: 520px;
     position: absolute;
@@ -11,7 +11,7 @@ body{
     top: 50%;
 }
 
-.background .shapeRegister{
+.backgroundRegister .shapeRegister{
     height: 200px;
     width: 200px;
     position: absolute;
@@ -65,14 +65,14 @@ form h3{
     text-align: center;
 }
 
-label{
+.labelRegister{
     display: block;
     margin-top: 30px;
     font-size: 16px;
     font-weight: 500;
 }
 
-input{
+.inputRegister{
     display: block;
     height: 50px;
     width: 100%;
@@ -88,7 +88,7 @@ input{
     color: #e5e5e5;
 }
 
-button{
+.buttonRegister{
     margin-top: 50px;
     width: 100%;
     background-color: #ffffff;
