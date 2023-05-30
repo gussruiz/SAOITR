@@ -2,7 +2,7 @@ const usersDB = {
     users: require('../model/users.json'),
     setUsers: function (data) {this.users = data}
 }
-const { v4: uuid } = require('uuid');
+const uuid = require('uuid-int');
 
 const fsPromises = require('fs').promises;
 const path = require('path');
@@ -22,9 +22,12 @@ const handleNewUser = async (req, res) => {
     try {
         //encrypt the password
         const hashedPassword = await bcrypt.hash(password, 10);
+        const ToBeId = 0;
+        const generator = uuid(ToBeId);
+        const id = generator.uuid();
         //store the new user
         const newUser =  {
-            "id": uuid(),
+            "id": id,
             "name": name,
             "email": email,  
             "password": hashedPassword
@@ -60,21 +63,13 @@ const handleLogin = async (req, res) => {
     const secret = process.env.ACCESS_TOKEN_SECRET;
 
     //create a JWTs
-    const accessToken = jwt.sign({ 
-            exp: '1h',
-            id: foundUser.id
-        },
-        secret
-    );
 
-    //saving resfresehToken with current user
-    const otherUsers =  usersDB.users.filter(person => person.email !== foundUser.email);
-    const currentUser = {...foundUser, refreshToken};
-    usersDB.setUsers([...otherUsers, currentUser]);
-    await fsPromises.writeFile(
-        path.join(__dirname, '..', 'model', 'users.json'),
-        JSON.stringify(usersDB.users)
-    );
+    const accessToken = jwt.sign({ 
+        expiresIn: '1h',
+        id: foundUser.id
+    },
+    secret
+);
 
     res.status(200).json({
         id: foundUser.id,
@@ -82,6 +77,17 @@ const handleLogin = async (req, res) => {
         email: foundUser.email,
         token: accessToken
     });
+
+
+    //saving resfresehToken with current user
+    const otherUsers =  usersDB.users.filter(person => person.email !== foundUser.email);
+    const currentUser = {...foundUser};
+    usersDB.setUsers([...otherUsers, currentUser]);
+    await fsPromises.writeFile(
+        path.join(__dirname, '..', 'model', 'users.json'),
+        JSON.stringify(usersDB.users)
+    );
+
 }
 
 
@@ -90,8 +96,8 @@ const handleLogout = async (req, res) => {
 
 
     //delete  refreshToken in DB 
-    const otherUsers = usersDB.users.filter(person => person.refreshToken !== foundUser.refreshToken);
-    const currentUser = {...foundUser, refreshToken: ''};
+    const otherUsers = usersDB.users.filter(person => person.token !== foundUser.token);
+    const currentUser = {...foundUser, token: ''};
     usersDB.setUsers([...otherUsers, currentUser]);
     await fsPromises.writeFile(
         path.join(__dirname, '..', 'users.json'),
