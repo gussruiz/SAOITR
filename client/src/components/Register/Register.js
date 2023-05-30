@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from '../../api/axios';
 import { Link } from "react-router-dom";
 import './Register.css'
+import md5 from 'md5'; 
 
 const USER_REGEX = /^.{2,10}$/i;
 const PWD_REGEX = /^.{2,125}$/i;
@@ -76,7 +77,7 @@ const Register = () => {
 		// setSucess(true);
 		try {
 			const response = await axios.post(REGISTER_URL,
-				JSON.stringify({name, email, password }),
+				JSON.stringify({name, email, password: md5(password) }),
 				{
 					headers: { 'Content-Type': 'application/json' },
 					

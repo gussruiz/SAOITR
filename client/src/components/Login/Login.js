@@ -3,6 +3,7 @@ import useAuth from '../../hooks/useAuth';
 import { Link, useNavigate} from 'react-router-dom';
 import axios from '../../api/axios';
 import './Login.css'
+import md5 from 'md5';
 
 
 const LOGIN_URL = '/login'
@@ -33,17 +34,28 @@ const Login = () => {
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ email, password }), 
+                JSON.stringify({ email, password: md5(password) }), 
                 {
                     headers: { 'Content-Type': 'application/json' },
-                }
+                    body: JSON.stringify({ email, password: md5(password) })
+                }, 
             );
-            console.log(JSON.stringify(response?.data));
-            const token = response?.data?.tToken;
-            setAuth({ email, password, token });
-            setEmail('');
-            setPassword('');
-            navigate('/linkpage', { replace: true });
+            console.log(response)
+            if(response.status === 200){
+                const responseJson = response.data;
+
+                localStorage.setItem('authData', JSON.stringify({
+                  token: responseJson.token,
+                  id: responseJson.id,
+                }));
+            
+                console.log(JSON.stringify(response?.data));
+                const token = response?.data?.tToken;
+                setAuth({ email, password, token });
+                setEmail('');
+                setPassword('');
+                navigate('/linkpage', { replace: true });
+            }
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No server response');
