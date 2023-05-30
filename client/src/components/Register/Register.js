@@ -109,9 +109,9 @@ const Register = () => {
 				</section>
 			) : (
 				<>
-					<div class="background">
-						<div class="shapeRegister"></div>
-						<div class="shapeRegister"></div>
+					<div className="background">
+						<div className="shapeRegister"></div>
+						<div className="shapeRegister"></div>
 					</div>
 					<section>
 						<p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive" >{errMsg}</p>
