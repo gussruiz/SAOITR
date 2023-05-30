@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import useAuth from '../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import axios from '../api/axios';
+import axios from '../../api/axios';
+import './Login.css'
+
 
 const LOGIN_URL = '/login'
 
@@ -12,8 +14,6 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
-
-
 
     const emailRef = useRef();
     const errRef = useRef();
@@ -63,13 +63,16 @@ const Login = () => {
 
     return (
         <section>
+            <div class="background">
+                <div class="shape"></div>
+                <div class="shape"></div>
+            </div>
             <p ref={errRef} className={errMsg ? "errMsg" : "offscreen"} aria-live='assertive'>
                 {errMsg}
             </p>
 
-            <h1>Sing In</h1>
-
             <form onSubmit={handleSubmit}>
+            <h2>Sing In</h2>
                 <label htmlFor='email'>E-mail:</label>
                 <input
                     type='text'
@@ -91,15 +94,15 @@ const Login = () => {
                     />
 
                 <button>Sing In</button>
+
+                <p>
+                    Need an Account? <br />
+                    <span className='line'>
+                        <a href='#'>Sing In</a>
+                    </span>
+                </p>
             </form>
 
-            <p>
-                Need an Account? <br />
-                <span className='line'>
-                    {/* put router link here */}
-                    <a href='#'>Sing In</a>
-                </span>
-            </p>
 
         </section>
     )

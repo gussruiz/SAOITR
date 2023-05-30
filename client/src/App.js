@@ -1,5 +1,5 @@
-import Register from "./components/Register";
-import Login from "./components/Login";
+import Register from "./components/Register/Register";
+import Login from "./components/Login/Login";
 import Home from "./components/Home";
 import Layout from "./components/Layout";
 import Admin from "./components/Admin";
@@ -9,13 +9,6 @@ import LinkPage from "./components/LinkPage";
 import RequireAuth from "./components/RequireAuth";
 
 import { Routes, Route } from "react-router-dom";
-
-const ROLES = {
-	'User': 2001,
-	'Editor': 1984,
-	'Admin': 5150
-}
-
 
 function App() {
 	return (
@@ -28,11 +21,11 @@ function App() {
 				<Route path="unauthorized" element={<Unauthorized />} />
 
 				{/* we want to protect these routes */}
-				<Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>
+				<Route element={<RequireAuth/>}>
 					<Route path="/" element={<Home />} />
 				</Route>
 
-				<Route element={<RequireAuth allowedRoles={[ROLES.Admin]}/>}>
+				<Route element={<RequireAuth/>}>
 					<Route path="admin" element={<Admin />} />
 				</Route>
 
