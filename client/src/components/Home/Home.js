@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import './LinkPage.css'
+import './Home.css'
 import axios from 'axios';
 
 const LOGOUT_URL = '/logout';
@@ -31,6 +31,13 @@ const handleLogout = async (e) => {
 
 const Home = () => {
     return (
+      <>
+      <nav>
+        <a href="#">HOME</a>
+        <a href="#">CODING</a>
+        <a href="#">GUITAR</a>
+        <div id="indicator"></div>
+      </nav>
         <section className="linkPage_main">
           <h1>You are logged in!</h1>
           <br />
@@ -38,6 +45,7 @@ const Home = () => {
             <button onClick={handleLogout} href="/register">Fazer Logout</button>
           </p>
         </section>
+      </>
       );
     };
 
