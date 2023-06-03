@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom"
-import './Home.css'
-import axios from 'axios';
+import { Link } from "react-router-dom";
+import './Home.css';
+import axios from '../../api/axios';
+import './Home.css';
 
 const LOGOUT_URL = '/logout';
 
@@ -17,37 +18,49 @@ const handleLogout = async (e) => {
   }
 
   try {
-    const response = await axios.post('/logout',
-    { id: id},
-    {
-        headers: { 'Content-Type': 'application/json', 'authorization': `Bearer ${token}`},
-    }
-    );
-    console.log(id)
-} catch (err){
-    console.log('erro', err);
-}
+    const response = await axios.post(
+      LOGOUT_URL,
+      JSON.stringify({ id: id }),
+      {
+        headers: { 'Content-Type': 'application/json', 'authorization': `Bearer ${token}` },
+      },
+      );
+      console.log(id);
+
+    // Clear the authData from the local storage
+    localStorage.removeItem('authData');
+    console.log('Logged out successfully');
+    window.location.reload();
+  } catch (err) {
+    console.log('Error:', err);
+  }
 };
 
+// const handleLogout = (e) => {
+//   e.preventDefault();
+
+//   // Clear the authData from the local storage
+//   localStorage.removeItem('authData');
+
+//   console.log('Logged out successfully');
+
+//   window.location.reload();
+// };
+
 const Home = () => {
-    return (
-      <>
-      <nav>
-        <a href="#">HOME</a>
-        <a href="#">CODING</a>
-        <a href="#">GUITAR</a>
-        <div id="indicator"></div>
-      </nav>
-        <section className="linkPage_main">
-          <h1>You are logged in!</h1>
-          <br />
-          <p>
-            <button onClick={handleLogout} href="/register">Fazer Logout</button>
-          </p>
-        </section>
-      </>
-      );
-    };
+  const authData = JSON.parse(localStorage.getItem('authData'));
+  const isLoggedIn = !!authData?.token;
 
+  return (
+    <header>
+      <h1>Welcome to My Website</h1>
+      {isLoggedIn ? (
+        <a onClick={handleLogout} href="/register" className="logout-button">Log out</a>
+      ) : (
+        <Link to="/login" className="logout-button">Log In/Register</Link>
+      )}
+    </header>
+  );
+};
 
-export default Home
+export default Home;

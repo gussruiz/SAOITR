@@ -8,7 +8,7 @@ const authController =  require('../controllers/userController');
 
 router.post('/users', registerController.handleNewUser);
 router.post('/login', authController.handleLogin);
-router.get('/logout', verifyJWT, logoutController.handleLogout);
+router.post('/logout', logoutController.handleLogout);
 
 module.exports = router;
 

@@ -94,18 +94,13 @@ const handleLogin = async (req, res) => {
 //logout
 const handleLogout = async (req, res) => {    
 
+    console.log(req)
+    const token = req.headers.authorization?.split(" ")[1];
+    if (token) {
+      res.status(200).json({ message: "Logout realizado com sucesso" });
+      console.log('METHOD: POST | ROTA: LOGOUT | STATUS: DESLOGADO');
 
-    //delete  refreshToken in DB 
-    const otherUsers = usersDB.users.filter(person => person.token !== foundUser.token);
-    const currentUser = {...foundUser, token: ''};
-    usersDB.setUsers([...otherUsers, currentUser]);
-    await fsPromises.writeFile(
-        path.join(__dirname, '..', 'users.json'),
-        JSON.stringify(usersDB.users)
-    );
-
-    res.clearCookie('jwt', {httpOnly: true, sameSite: 'None', secure: true}); //sercure: true - only servers on https
-    res.sendStatus(204);
+    }
  
 }
 

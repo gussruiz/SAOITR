@@ -54,7 +54,7 @@ const Login = () => {
                 setAuth({ email, password, token });
                 setEmail('');
                 setPassword('');
-                navigate('/linkpage', { replace: true });
+                navigate('/', { replace: true });
             }
         } catch (err) {
             if (!err?.response) {

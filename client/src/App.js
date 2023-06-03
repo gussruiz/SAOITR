@@ -10,9 +10,9 @@ function App() {
 		<Routes>
 			<Route path="/" element={<Layout />}>
 				{/* public routes */}
+				<Route path="" element={<LinkPage />} />
 				<Route path="login" element={<Login />} />
 				<Route path="register" element={<Register />} />
-				<Route path="home" element={<LinkPage />} />
 			</Route>
 		</Routes>
 	);
