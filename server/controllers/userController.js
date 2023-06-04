@@ -93,8 +93,6 @@ const handleLogin = async (req, res) => {
 
 //logout
 const handleLogout = async (req, res) => {    
-
-    console.log(req)
     const token = req.headers.authorization?.split(" ")[1];
     if (token) {
       res.status(200).json({ message: "Logout realizado com sucesso" });

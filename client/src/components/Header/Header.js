@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import './Home.css';
+import './Header.css';
 import axios from '../../api/axios';
-import './Home.css';
 
 const LOGOUT_URL = '/logout';
 
@@ -47,20 +46,26 @@ const handleLogout = async (e) => {
 //   window.location.reload();
 // };
 
-const Home = () => {
+const Header = () => {
   const authData = JSON.parse(localStorage.getItem('authData'));
   const isLoggedIn = !!authData?.token;
 
   return (
     <header>
-      <h1>Welcome to My Website</h1>
+      <h1>SAOTIR</h1>
       {isLoggedIn ? (
-        <a onClick={handleLogout} href="/register" className="logout-button">Log out</a>
+        <>
+          <a onClick={handleLogout} href="/register" className="home-button">Log out</a>
+          <Link to="#" className="home-button">Profile</Link>
+        </>
       ) : (
-        <Link to="/login" className="logout-button">Log In/Register</Link>
+        <>
+          <Link to="/login" className="home-button">Log In</Link>
+          <Link to="/register" className="home-button">Register</Link>
+        </>
       )}
     </header>
   );
 };
 
-export default Home;
+export default Header;

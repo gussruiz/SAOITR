@@ -1,7 +1,7 @@
-import Register from "./components/Register/Register";
-import Login from "./components/Login/Login";
+import Register from "./Pages/Register/Register";
+import Login from "./Pages/Login/Login";
 import Layout from "./components/Layout";
-import LinkPage from "./components/Home/Home";
+import LinkPage from "./Pages/Home/Home";
 
 import { Routes, Route } from "react-router-dom";
 
