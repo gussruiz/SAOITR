@@ -12,7 +12,7 @@ const OccurrencesDisplay = () => {
                 </div>
                 <div className="grid-item">
                     <div className="grid-item-content">
-                        Text 2
+                        Texto
                     </div>
                 </div>
                 <div className="grid-item">
