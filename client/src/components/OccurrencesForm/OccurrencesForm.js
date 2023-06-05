@@ -24,10 +24,9 @@ const OccurrencesForm = () => {
 
     const currentTime = getCurrentTime();
     const authData = JSON.parse(localStorage.getItem('authData'));
-    const token = authData?.token;
-    const id = authData?.id;
+    const user_id = authData?.id;
 
-    console.log(km, location, occurrenceType, currentTime, id, token);
+    console.log(currentTime, location, occurrenceType, km, user_id);
 
     setKm('');
     setLocation('');

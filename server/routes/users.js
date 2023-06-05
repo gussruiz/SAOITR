@@ -2,13 +2,11 @@ const express =  require('express');
 const router =  express.Router();
 const verifyJWT =  require('../middleware/verifyJWT');
 
-const registerController =  require('../controllers/userController');
-const logoutController =  require('../controllers/userController');
-const authController =  require('../controllers/userController');
+const userController =  require('../controllers/userController');
 
-router.post('/users', registerController.handleNewUser);
-router.post('/login', authController.handleLogin);
-router.post('/logout', logoutController.handleLogout);
+router.post('/users', userController.handleNewUser);
+router.post('/login', userController.handleLogin);
+router.post('/logout',verifyJWT, userController.handleLogout);
 
 module.exports = router;
 

@@ -1,0 +1,21 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
+    gap: 10px; /* Adjust the gap between divs as needed */
+  }
+
+  .grid-item {
+    background-color: red;
+    height: 100px; /* Adjust the height of the divs as needed */
+    position: relative;
+  }
+
+  .grid-item-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+  }
