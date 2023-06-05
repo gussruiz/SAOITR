@@ -32,10 +32,10 @@ const updateOccurence = (req, res) => {
         return res.status(400).json({'message': `Occurrence ID: ${req.body.id} not found`});
     }
 
-    if(req.body.registered_at) employee.registered_at =  req.body.registered_at;
-    if(req.body.local) employee.local =  req.body.local;
-    if(req.body.occurrence_type) employee.occurrence_type =  req.body.occurrence_type;
-    if(req.body.km) employee.km =  req.body.km;
+    if(req.body.registered_at) occurrence.registered_at =  req.body.registered_at;
+    if(req.body.local) occurrence.local =  req.body.local;
+    if(req.body.occurrence_type) occurrence.occurrence_type =  req.body.occurrence_type;
+    if(req.body.km) occurrence.km =  req.body.km;
 
     const filteredArray =  data.occurrences.filter(oc => oc.id !== parseInt(req.body.id));
     const unsortedArray = [...filteredArray, occurrence];
