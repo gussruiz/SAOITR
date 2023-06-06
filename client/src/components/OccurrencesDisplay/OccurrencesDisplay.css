@@ -1,5 +1,5 @@
 .grid-container {
-    margin: -15px 20px 20px 20px;
+    margin: 0px 20px 20px 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
     gap: 15px; /* Adjust the gap between divs as needed */
@@ -8,7 +8,7 @@
   .grid-item {
     background: rgb(195,46,34);
     background: linear-gradient(145deg, rgba(195,46,34,1) 0%, rgba(36,4,9,1) 100%);
-    height: 100px; /* Adjust the height of the divs as needed */
+    height: 200px; /* Adjust the height of the divs as needed */
     position: relative;
     border-radius: 25px;
   }
@@ -18,7 +18,7 @@
     color: white;
     position: absolute;
     top: 50%;
-    left: 10%;
+    left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(255,255,255,0.13);
     border-radius: 10px;

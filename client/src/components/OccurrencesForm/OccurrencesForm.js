@@ -50,6 +50,7 @@ const OccurrencesForm = () => {
             setKm('');
             setLocation('');
             setOccurrenceType('');
+            window.location.reload();
         } catch (err) {
             console.log(err);
         }
