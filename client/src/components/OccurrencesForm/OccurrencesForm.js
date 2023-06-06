@@ -12,30 +12,34 @@ const OccurrencesForm = () => {
 
     const handleNewOccurrence = async (e) => {
         e.preventDefault();
-
+    
         const authData = JSON.parse(localStorage.getItem('authData'));
         const user_id = authData?.id;
-
+    
         console.log(registerdAt, location, occurrenceType, km, user_id);
-
+    
         try {
             const token = authData?.token;
-            const response = await axios.post('/occurrences',
-                {
-                    registered_at: registerdAt,
-                    local: location,
-                    occurrence_type: parseInt(occurrenceType),
-                    km: km,
-                    user_id: user_id
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` // Include the token in the Authorization header
-                    }
+    
+            // Check the time before sending the request
+            if (!checkDateTime(registerdAt)) {
+                console.log('Invalid time');
+                return;
+            }
+    
+            const response = await axios.post('/occurrences', {
+                registered_at: registerdAt,
+                local: location,
+                occurrence_type: parseInt(occurrenceType),
+                km: km,
+                user_id: user_id
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // Include the token in the Authorization header
                 }
-            );
-
+            });
+    
             setKm('');
             setLocation('');
             setOccurrenceType('');
@@ -44,16 +48,11 @@ const OccurrencesForm = () => {
             console.log(err);
         }
     }
-
-    function checkDateTime() {
-        setRegisterdAt(registerdAt);
-        const selectedDateTime = new Date(registerdAt);
+    
+    function checkDateTime(dateTime) {
+        const selectedDateTime = new Date(dateTime);
         const currentDateTime = new Date();
-        if (selectedDateTime > currentDateTime) {
-            return setRegisterdAt = '';
-        }else{
-        return setRegisterdAt(registerdAt);
-        }
+        return selectedDateTime <= currentDateTime;
     }
 
     return (
@@ -79,8 +78,9 @@ const OccurrencesForm = () => {
                     <input
                         className='OccurrencesForm-input'
                         type='text'
+                        pattern="^[0-9]{1,4}$"
                         onChange={(e) => setKm(e.target.value)}
-                        placeholder='Kilometer'
+                        placeholder='Please enter a value up to 9999Km'
                         value={km}
                     />
                 </div>

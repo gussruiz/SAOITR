@@ -119,6 +119,7 @@ const getUser = async (req, res) => {
             message: "Credentials do not correspond to any on data base"
         })
     }
+    
     return res.status(200).send({
         id: foundUser.id,
         name: foundUser.name,

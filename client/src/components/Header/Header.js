@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import './Header.css';
 import axios from '../../api/axios';
+import { useNavigate } from "react-router-dom";
 
 const LOGOUT_URL = '/logout';
+
 
 const handleLogout = async (e) => {
   e.preventDefault();
@@ -35,28 +37,27 @@ const handleLogout = async (e) => {
   }
 };
 
-// const handleLogout = (e) => {
-//   e.preventDefault();
 
-//   // Clear the authData from the local storage
-//   localStorage.removeItem('authData');
 
-//   console.log('Logged out successfully');
-
-//   window.location.reload();
-// };
 
 const Header = () => {
+
+  const handleTitleClick = () => {
+    navigate('/');
+  };
+
   const authData = JSON.parse(localStorage.getItem('authData'));
   const isLoggedIn = !!authData?.token;
+  const navigate = useNavigate();
+
 
   return (
     <header>
-      <h1>SAOTIR</h1>
+      <h1 onClick={handleTitleClick} >SAOTIR</h1>
       {isLoggedIn ? (
         <>
-          <a onClick={handleLogout} href="/register" className="home-button">Log out</a>
-          <Link to="#" className="home-button">Profile</Link>
+          <Link onClick={handleLogout} to="/logout" className="home-button"> Log Out</Link>
+          <Link to="/profile" className="home-button">Profile</Link>
         </>
       ) : (
         <>
