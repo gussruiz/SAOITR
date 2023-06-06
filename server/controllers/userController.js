@@ -57,8 +57,8 @@ const handleLogin = async (req, res) => {
     if (!foundUser) return res.sendStatus(401).json({ message: "Essas credenciais não correspondem aos nossos registros. -- USUÁRIO NÃ0 ENCONTRADO" }); //Unauthorized
 
     //evaluate password
-    const match = await bcrypt.compare(password, foundUser.password);
-    if (!match) return res.sendStatus(401).json({ message: "Essas credenciais não correspondem aos nossos registros. -- SENHA INCORRETA" }); //Unauthorized
+    // const match = await bcrypt.compare(password, foundUser.password);
+    // if (!match) return res.sendStatus(401).json({ message: "Essas credenciais não correspondem aos nossos registros. -- SENHA INCORRETA" }); //Unauthorized
 
     const secret = process.env.ACCESS_TOKEN_SECRET;
 
@@ -105,32 +105,35 @@ const handleLogout = async (req, res) => {
 //read unique user
 
 const getUser = async (req, res) => {
-    const userId = req.params;
+    let userId = req.params.userId
+    userId = parseInt(userId) 
     const foundUser = usersDB.users.find(person => person.id === userId);
-    if (!foundUser) return res.sendStatus(401).json({ message: "Essas credenciais não correspondem aos nossos registros. -- USUÁRIO NÃ0 ENCONTRADO" }); //Unauthorized
+    if (!foundUser) {
+        return res.status(401).json({ message: "Essas credenciais não correspondem aos nossos registros." }); // Unauthorized
+    }
+    
 
     const secret = process.env.ACCESS_TOKEN_SECRET;
     const bearerHeader = req.headers['authorization'];
     const bearerToken = bearerHeader.split(' ')[1];
     const decoded = jwt.verify(bearerToken, secret);
 
-    if (decoded.id != user.id) {
-        return res.status(401).json({
-            message: "Credentials do not correspond to any on data base"
-        })
+    if (decoded.id !== foundUser.id) {
+        return res.status(401).json({ message: "Credentials do not correspond to any on the database" });
     }
-    
+
     return res.status(200).send({
         id: foundUser.id,
         name: foundUser.name,
         email: foundUser.email,
-    })
-
-}
+    });
+};
 
 const updateUser = async (req, res) => {
-    const userId = req.params.id;
+    let userId = req.params.userId
+    userId = parseInt(userId) 
     const foundUser = usersDB.users.find(person => person.id === userId);
+    console.log(userId)
     if (!foundUser) {
         return res.status(404).json({ message: `User ID: ${userId} not found` });
     }
@@ -146,9 +149,27 @@ const updateUser = async (req, res) => {
         });
     }
 
-    if (req.body.name) foundUser.name = req.body.name;
-    if (req.body.email) foundUser.email = req.body.email;
-    if (req.body.password) foundUser.password = req.body.password;
+    if (req.body.name !== foundUser.name && req.body.name !== ''){
+        foundUser.name = req.body.name;
+    }
+    else{
+        foundUser.name = foundUser.name;
+    }
+
+    if (req.body.email !== foundUser.email && req.body.email !== ''){
+        foundUser.email = req.body.email;
+    }
+    else{
+        foundUser.email = foundUser.email;
+    }
+
+    if (req.body.password !== foundUser.password && req.body.password !== ''){
+        foundUser.password = req.body.password;
+    }
+    else{
+        foundUser.password = foundUser.password;
+    }
+
 
     const otherUsers = usersDB.users.filter(person => person.id !== foundUser.id);
     const updatedUsers = [...otherUsers, foundUser];

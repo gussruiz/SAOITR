@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const LOGOUT_URL = '/logout';
 
-
 const handleLogout = async (e) => {
   e.preventDefault();
 
@@ -56,7 +55,7 @@ const Header = () => {
       <h1 onClick={handleTitleClick} >SAOTIR</h1>
       {isLoggedIn ? (
         <>
-          <Link onClick={handleLogout} to="/logout" className="home-button"> Log Out</Link>
+          <Link onClick={handleLogout} to="/" className="home-button"> Log Out</Link>
           <Link to="/profile" className="home-button">Profile</Link>
         </>
       ) : (
