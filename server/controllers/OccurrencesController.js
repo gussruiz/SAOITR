@@ -3,13 +3,18 @@ const data = {
     setOccurrences: function (data) {this.occurrences  = data} 
 };
 
+const fsPromises = require('fs').promises;
+const path = require('path');
+
 const getAllOccurences = (req, res) => {
     res.json(data.occurrences);
 }
 
-const createNewOccurence = (req, res) => {
+const createNewOccurence = async (req, res) => {
 
     const {registered_at, local, occurrence_type, km, user_id} = req.body;
+    if(!registered_at || !local || !occurrence_type || !km || !user_id) return res.status(400).json({'message': 'Missing Info'});
+
     const id = data.occurrences[data.occurrences.length - 1].id + 1 || 1;
 
     const newOccurence = {
@@ -20,9 +25,15 @@ const createNewOccurence = (req, res) => {
         km: km, 
         user_id: user_id
     }
+
+    console.log(newOccurence)
     
     data.setOccurrences([...data.occurrences, newOccurence]);
-    res.status(201).json(data.occurrences);
+    await fsPromises.writeFile(
+        path.join(__dirname, '..', 'model', 'occurrences.json'),
+        JSON.stringify(data.occurrences)
+    );
+    res.status(201).json({message: "Occurrence register completed successfully"});
 }
 
 const updateOccurence = (req, res) => {
