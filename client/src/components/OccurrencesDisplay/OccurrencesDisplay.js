@@ -8,15 +8,16 @@ const OccurrencesDisplay = () => {
 
     useEffect(() => {
         fetchData();
-      }, []);
+    }, []);
       
     const fetchData = async () => {
-    try {
-        const response = await axios.get('/occurrences');
-        setData(response.data);
-    } catch (error) {
-        console.log(error);
-    }
+        try {
+            const response = await axios.get('/occurrences');
+            setData(response.data);
+            console.log(data)
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (

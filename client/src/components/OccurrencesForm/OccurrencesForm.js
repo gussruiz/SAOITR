@@ -31,7 +31,7 @@ const OccurrencesForm = () => {
                 registered_at: registerdAt,
                 local: location,
                 occurrence_type: parseInt(occurrenceType),
-                km: km,
+                km: parseInt(km),
                 user_id: user_id
             }, {
                 headers: {

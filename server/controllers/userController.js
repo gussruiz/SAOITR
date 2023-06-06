@@ -184,6 +184,7 @@ const updateUser = async (req, res) => {
             id: foundUser.id,
             name: foundUser.name,
             email: foundUser.email,
+            password: foundUser.password
         });
     } catch (error) {
         res.status(500).json({ message: 'Failed to update user.' });
