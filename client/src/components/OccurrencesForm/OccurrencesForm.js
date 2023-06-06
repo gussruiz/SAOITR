@@ -7,35 +7,24 @@ const OccurrencesForm = () => {
     const [km, setKm] = useState('');
     const [location, setLocation] = useState('');
     const [occurrenceType, setOccurrenceType] = useState('');
+    const [registerdAt, setRegisterdAt] = useState('');
 
-    const getCurrentTime = () => {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    };
 
     const handleNewOccurrence = async (e) => {
         e.preventDefault();
-    
-        const currentTime = getCurrentTime();
+
         const authData = JSON.parse(localStorage.getItem('authData'));
         const user_id = authData?.id;
-    
-        console.log(currentTime, location, occurrenceType, km, user_id);
-    
+
+        console.log(registerdAt, location, occurrenceType, km, user_id);
+
         try {
             const token = authData?.token;
             const response = await axios.post('/occurrences',
                 {
-                    registered_at: currentTime,
+                    registered_at: registerdAt,
                     local: location,
-                    occurrence_type: occurrenceType,
+                    occurrence_type: parseInt(occurrenceType),
                     km: km,
                     user_id: user_id
                 },
@@ -46,7 +35,7 @@ const OccurrencesForm = () => {
                     }
                 }
             );
-    
+
             setKm('');
             setLocation('');
             setOccurrenceType('');
@@ -56,6 +45,16 @@ const OccurrencesForm = () => {
         }
     }
 
+    function checkDateTime() {
+        setRegisterdAt(registerdAt);
+        const selectedDateTime = new Date(registerdAt);
+        const currentDateTime = new Date();
+        if (selectedDateTime > currentDateTime) {
+            return setRegisterdAt = '';
+        }else{
+        return setRegisterdAt(registerdAt);
+        }
+    }
 
     return (
         <div className='OccurrencesForm-conatiner'>
@@ -67,7 +66,6 @@ const OccurrencesForm = () => {
                     <input
                         className='OccurrencesForm-input'
                         type='text'
-                        id='name'
                         onChange={(e) => setLocation(e.target.value)}
                         placeholder='Street/Lane'
                         value={location}
@@ -81,10 +79,22 @@ const OccurrencesForm = () => {
                     <input
                         className='OccurrencesForm-input'
                         type='text'
-                        id='phone'
                         onChange={(e) => setKm(e.target.value)}
                         placeholder='Kilometer'
                         value={km}
+                    />
+                </div>
+
+                <div className='OccurrencesForm-conatiner_input'>
+                    <label className='OccurrencesForm-label' htmlFor='phone'>
+                        Time
+                    </label>
+                    <input
+                        className='OccurrencesForm-input'
+                        type="datetime-local"
+                        onChange={(e) => setRegisterdAt(e.target.value)}
+                        placeholder='Time'
+                        value={registerdAt}
                     />
                 </div>
 

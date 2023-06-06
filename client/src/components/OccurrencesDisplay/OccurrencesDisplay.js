@@ -27,7 +27,16 @@ const OccurrencesDisplay = () => {
                         <div className="grid-item-content">
                             <p>Hoário: {item.registered_at}</p>
                             <p>Local: {item.local}</p>
-                            <p>Tipo: {item.occurrence_type}</p>
+                            {item.occurrence_type === 1 && <p>Tipo: Atropelamento</p>}
+                            {item.occurrence_type === 2 && <p>Tipo: Deslizamento</p>}
+                            {item.occurrence_type === 3 && <p>Tipo: Colisão frontal</p>}
+                            {item.occurrence_type === 4 && <p>Tipo: Capotagem</p>}
+                            {item.occurrence_type === 5 && <p>Tipo: Saída de pista</p>}
+                            {item.occurrence_type === 6 && <p>Tipo: Batida em objeto fixo</p>}
+                            {item.occurrence_type === 7 && <p>Tipo: Veículo avariado</p>}
+                            {item.occurrence_type === 8 && <p>Tipo: Colisão com motocicletas</p>}
+                            {item.occurrence_type === 9 && <p>Tipo: Colisão no mesmo sentido ou transversal</p>}
+                            {item.occurrence_type === 10 && <p>Tipo: Construção</p>}
                             <p>KM: {item.km}</p>
                         </div>
                     </div>
@@ -37,50 +46,5 @@ const OccurrencesDisplay = () => {
     );
     
 }
-{/* <div className="grid-item">
-    <div className="grid-item-content">
-        Text 1
-    </div>
-</div>
-<div className="grid-item">
-    <div className="grid-item-content">
-        Texto
-    </div>
-</div>
-<div className="grid-item">
-    <div className="grid-item-content">
-        Text 3
-    </div>
-</div>
-<div className="grid-item">
-    <div className="grid-item-content">
-        Text 4
-    </div>
-</div>
-<div className="grid-item">
-    <div className="grid-item-content">
-        Text 5
-    </div>
-</div>
-<div className="grid-item">
-    <div className="grid-item-content">
-        Text 6
-    </div>
-</div>
-<div className="grid-item">
-    <div className="grid-item-content">
-        Text 7
-    </div>
-</div>
-<div className="grid-item">
-    <div className="grid-item-content">
-        Text 8
-    </div>
-</div>
-<div className="grid-item">
-    <div className="grid-item-content">
-        Text 9
-    </div>
-</div> */}
 
 export default OccurrencesDisplay

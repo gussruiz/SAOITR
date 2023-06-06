@@ -11,6 +11,56 @@ tags:
   - name: occurrences
     description: "Enpoints sobre incidentes"
 paths:
+  /logout:
+    post:
+      summary: "Realiza o logout no sistema"
+      tags: 
+        - authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+              required:
+                - id # ID DO USUÁRIO
+      security:
+        - auth: [] # Quando usa OAuth preenche, quando é através de token, deixar
+      responses:
+        200:
+          description: "Logout realizado com sucesso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required: 
+                  - message
+        ## Campos inválidos
+        400:
+          description: "Informe um ID válido"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        ## Validação do Token
+        401:
+          description: "Essas credenciais não correspondem aos nossos registro."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: "Erro ao tentar encontrar o usuário no servidor"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      
   /login:
     post:
       summary: "Realiza o login no sistema"
@@ -39,19 +89,36 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  token:
+                    type: string
+                required: 
+                  - id
+                  - name
+                  - email
+                  - token
+        ## Campos inválidos
         400:
-          description: "As credenciais informadas não correspondem ao modelo correto da requisição. Por favor verifique os dados informados e tente novamente."
+          description: "Campos inválidos."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        401:
+        ## Caso o e-mail não exista ou senha incorreta
+        401: 
           description: "Essas credenciais não correspondem aos nossos registros."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+              
         500:
           description: "Erro ao tentar encontrar o usuário no servidor"
           content:
@@ -93,13 +160,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         400:
-          description: "As credenciais informadas não correspondem ao modelo correto da requisição. Por favor verifique os dados informados e tente novamente."
+          description: "Campos inválidos"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        422:
+          description: "E-mail já utilizado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"        
         500:
-          description: "Erro ao tentar cadastrar o usuário no servidor"
+          description: "Erro no servidor"
           content:
             application/json:
               schema:
@@ -126,19 +199,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         400:
-          description: "As credenciais informadas não correspondem ao modelo correto da requisição. Por favor verifique os dados informados e tente novamente."
+          description: "Campos inválidos"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        403:
+        401:
           description: "Essas credenciais não correspondem aos nossos registros."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         500:
-          description: "Erro ao tentar atualizar o usuário no servidor"
+          description: "ErroErro no servidor"
           content:
             application/json:
               schema:
@@ -186,19 +259,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         400:
-          description: "As credenciais informadas não correspondem ao modelo correto da requisição. Por favor verifique os dados informados e tente novamente."
+          description: "Campos inválidos"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        403:
+        401:
           description: "Essas credenciais não correspondem aos nossos registros."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        422:
+          description: "E-mail já utilizado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         500:
-          description: "Erro ao tentar atualizar o usuário no servidor"
+          description: "Erro no servidor"
           content:
             application/json:
               schema:
@@ -220,19 +299,19 @@ paths:
         200:
           description: "Usuário excluido com sucesso"
         400:
-          description: "As credenciais informadas não correspondem ao modelo correto da requisição. Por favor verifique os dados informados e tente novamente."
+          description: "Campos inválidos"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        403:
+        401:
           description: "Essas credenciais não correspondem aos nossos registros."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         500:
-          description: "Erro ao tentar excluir o usuário no servidor"
+          description: "Erro no servidor"
           content:
             application/json:
               schema:
@@ -249,26 +328,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Occurrences"
-        400:
-          description: "As credenciais informadas não correspondem ao modelo correto da requisição. Por favor verifique os dados informados e tente novamente."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        403:
-          description: "Você não tem permissão para acessar esse recurso."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        404:
-          description: "Ocorrências do usuário informado não foram encontradas."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
         500:
-          description: "Erro ao tentar buscar as ocorrências no servidor"
+          description: "Erro no servidor"
           content:
             application/json:
               schema:
@@ -289,18 +350,16 @@ paths:
                   type: string #datetime
                 local:
                   type: string
-                occurrence_tipe:
-                  type: string
+                occurrence_type:
+                  type: integer
                 km:
                   type: integer
-                token:
-                  type: string
                 user_id:
                   type: integer
               required:                
                 - registered_at
                 - local
-                - occurrence_tipe
+                - occurrence_type
                 - km
                 - user_id
       responses:
@@ -311,13 +370,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/Occurrence"
         400:
-          description: "As credenciais informadas não correspondem ao modelo correto da requisição. Por favor verifique os dados informados e tente novamente."
+          description: "Campos inválidos"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        401:
+          description: "Essas credenciais não correspondem aos nossos registros."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         500:
-          description: "Erro ao tentar cadastrar a ocorrência no servidor"
+          description: "Erro no servidor"
           content:
             application/json:
               schema:
@@ -339,12 +404,10 @@ paths:
                   type: string #datetime
                 local:
                   type: string
-                occurrence_tipe:
-                  type: string
+                occurrence_type:
+                  type: integer
                 km:
                   type: integer
-                token:
-                  type: string
                 user_id:
                   type: integer
               required:                
@@ -352,7 +415,6 @@ paths:
                 - local
                 - occurrence_tipe
                 - km
-                - token
                 - user_id
       parameters: 
         - in: path
@@ -363,25 +425,25 @@ paths:
           description: "ID do incidente que será editado"
       responses:
         200:
-          description: "Atualização da ocorrência realizada com sucesso" # Não vai devolver os dados da ocorrência atualizada? Está retornando apenas os dados da autenticação
+          description: "Atualização da ocorrência realizada com sucesso"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Occurrence"
         400:
-          description: "As credenciais informadas não correspondem ao modelo correto da requisição. Por favor verifique os dados informados e tente novamente."
+          description: "Campos inválidos"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        403:
+        401:
           description: "Essas credenciais não correspondem aos nossos registros."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         500:
-          description: "Erro ao tentar atualizar a ocorrência no servidor"
+          description: "Erro no servidor"
           content:
             application/json:
               schema:
@@ -400,22 +462,22 @@ paths:
           required: true
           description: "ID do incidente que será editado"
       responses:
-        204:
+        200:
           description: "Ocorrência excluida com sucesso"
         400:
-          description: "As credenciais informadas não correspondem ao modelo correto da requisição. Por favor verifique os dados informados e tente novamente."
+          description: "Campos inválidos"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        403:
+        401:
           description: "Essas credenciais não correspondem aos nossos registros."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         500:
-          description: "Erro ao tentar excluir a ocorrência no servidor"
+          description: "Erro no servidor"
           content:
             application/json:
               schema:
@@ -440,25 +502,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/Occurrences"
         400:
-          description: "As credenciais informadas não correspondem ao modelo correto da requisição. Por favor verifique os dados informados e tente novamente."
+          description: "Campos inválidos"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        403:
-          description: "Você não tem permissão para acessar esse recurso."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        404:
-          description: "Ocorrências do usuário informado não foram encontradas."
+        401:
+          description: "Essas credenciais não correspondem aos nossos registros."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         500:
-          description: "Erro ao tentar buscar as ocorrências no servidor"
+          description: "Erro no servidor"
           content:
             application/json:
               schema:
@@ -480,15 +536,13 @@ components:
         id:
           type: integer
         registered_at:
-          type: string #datetime
+          type: string #Formato ISO (YYYY-MM-DD HH:mm:ss)
         local:
           type: string
         occurrence_type:
-          type: string
+          type: integer
         km:
           type: integer
-        token:
-          type: string
         user_id:
           type: integer
 
