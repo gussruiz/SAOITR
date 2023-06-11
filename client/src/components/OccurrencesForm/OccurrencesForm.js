@@ -169,6 +169,7 @@ const OccurrencesForm = () => {
                     <input
                         className='OccurrencesForm-input'
                         type="datetime-local"
+                        step={2}
                         onChange={(e) => setRegisterdAt(e.target.value)}
                         placeholder='Time'
                         value={registerdAt}
