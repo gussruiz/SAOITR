@@ -91,8 +91,10 @@ const Register = () => {
 		} catch (err) {
 			if(!err?.response) {
 				setErrMsg('No server response');
-			} else if(err.response?.status === 409) {
-				setErrMsg('E-mail Taken')
+			} else if(err.response?.status === 400) {
+				setErrMsg('User name and password are required')
+			} else if(err.response?.status === 422) {
+				setErrMsg('E-mail already been registered')
 			} else {
 				setErrMsg('Registration Failed');
 			}
