@@ -26,6 +26,7 @@ const createNewOccurence = async (req, res) => {
         user_id: user_id
     }
 
+    console.log('New Occurrence created')
     console.log(newOccurence)
     
     data.setOccurrences([...data.occurrences, newOccurence]);
@@ -70,7 +71,7 @@ const deleteOccurence = (req, res) => {
     const filteredArray =  data.occurrences.filter(oc => oc.id !== parseInt(req.body.id));
     data.setOccurrences([...filteredArray]);
     res.status(200).json({
-        message: 'Occurrence deleted successfuly'
+        message: 'Occurrence deleted successfully'
     });
 }
 
