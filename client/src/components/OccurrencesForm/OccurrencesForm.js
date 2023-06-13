@@ -82,7 +82,7 @@ const OccurrencesForm = () => {
             setKm('');
             setLocation('');
             setOccurrenceType('');
-            // window.location.reload();
+            window.location.reload();
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No server response');

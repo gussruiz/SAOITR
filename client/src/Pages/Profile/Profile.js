@@ -104,23 +104,34 @@ const Profile = () => {
 		const v2 = PWD_REGEX.test(password);
 		const v3 = EMAIL_REGEX.test(email);
 
-		if (!v1 || !v2 || !v3) {
-			setErrMsg("Invalid Entry");
-			return;
-		}
+		// if (!v1 || !v3) {
+		// 	setErrMsg("Invalid Entry");
+		// 	return;
+		// }
         
+        console.log({ name, email, password: md5(password) })
         try {
+            if(name === ''){
+                setUser(data.name)
+            }
+            if(email === ''){
+                setEmail(data.email)
+            }
+            if(password === ''){
+                setPwd(null)
+            }
+
+            console.log({ name, email, password: md5(password) })
             const response = await axios.put(`/users/${userId}`,
                 JSON.stringify({ name, email, password: md5(password) }),
                 {
                     headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                    
-
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
                 }
             );
+
             console.log(response.data);
             console.log(response.accessToken);
             console.log(JSON.stringify(response));
@@ -261,7 +272,6 @@ const Profile = () => {
 										type="password"
 										id="confirm_pwd"
 										onChange={(e) => setMatchPwd(e.target.value)}
-										required
 										aria-invalid={validMatch ? "false" : "true"}
 										aria-describedby="confirmnote"
 										onFocus={() => setMatchFocus(true)}

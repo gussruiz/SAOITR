@@ -173,9 +173,15 @@ const updateUser = async (req, res) => {
         foundUser.email = foundUser.email;
     }
 
-    if (req.body.password !== foundUser.password && req.body.password !== ''){
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        foundUser.password = hashedPassword;
+    if(req.body.password === null){
+        foundUser.password = foundUser.password;
+    } else {
+        if (req.body.password !== foundUser.password && req.body.password !== ''){
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            foundUser.password = hashedPassword;
+        }else{
+            foundUser.password = foundUser.password;
+        }
     }
 
 
