@@ -159,31 +159,13 @@ const updateUser = async (req, res) => {
     }
     console.log(`Old user: ${foundUser.name} | Old user's e-mail:  ${foundUser.email}`);
 
-    if (req.body.name !== foundUser.name && req.body.name !== ''){
-        foundUser.name = req.body.name;
-    }
-    else{
-        foundUser.name = foundUser.name;
-    }
-
-    if (req.body.email !== foundUser.email && req.body.email !== ''){
-        foundUser.email = req.body.email;
-    }
-    else{
-        foundUser.email = foundUser.email;
-    }
+    foundUser.email = req.body.email;
+    foundUser.name = req.body.name;
 
     if(req.body.password !== null){
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         foundUser.password = hashedPassword;
     } 
-    // else {
-    //     if (req.body.password !== foundUser.password && req.body.password !== ''){
-
-    //     }else{
-    //         foundUser.password = foundUser.password;
-    //     }
-    // }
 
 
     const otherUsers = usersDB.users.filter(person => person.id !== foundUser.id);
