@@ -26,7 +26,7 @@ const OccurrencesDisplay = () => {
                 {data.map((item) => (
                     <div key={item.id} className="grid-item">
                         <div className="grid-item-content">
-                            <p>Hoário: {new Date(item.registered_at).toLocaleString('pt-BR')}</p>
+                            <p>Hoário: {new Date(item.registered_at).toLocaleString('pt-BR', {timeZone: 'UTC' })}</p>
                             <p>Local: {item.local}</p>
                             {item.occurrence_type === 1 && <p>Tipo: Atropelamento</p>}
                             {item.occurrence_type === 2 && <p>Tipo: Deslizamento</p>}

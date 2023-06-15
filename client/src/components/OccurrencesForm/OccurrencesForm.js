@@ -20,7 +20,7 @@ const OccurrencesForm = () => {
     const [validLocation, setValidLocation] = useState(false);
     const [locationFocus, setLocationFocus] = useState(false);
 
-    const [registerdAt, setRegisterdAt] = useState('');
+    const [registeredAt, setRegisteredAt] = useState('');
 
     const [occurrenceType, setOccurrenceType] = useState('');
 
@@ -48,20 +48,30 @@ const OccurrencesForm = () => {
     const handleNewOccurrence = async (e) => {
         e.preventDefault();
 
-        const date = new Date(registerdAt);
+        // var d1 = new Date(registeredAt);
+        // console.log('Sem timezoneoffset '+ d1)
+        // let d2 = new Date(d1.valueOf() - d1.getTimezoneOffset() * 60000);
+        // console.log('Com timezoneoffset '+ d2)
+        // const registered_at = d2.toDateString()
+        // console.log('D2 passado pra ISO'+ registered_at);
+
+        // let datefix = new Date(registeredAt.valueOf() - registeredAt.getTimezoneOffset() * 60000);
+        // const formattedDate = new Date(datefix.toISOString());
+
+        const date = new Date(registeredAt);
         const isoDate = date.toISOString();
         console.log(isoDate);
 
         const authData = JSON.parse(localStorage.getItem('authData'));
         const user_id = authData?.id;
 
-        // console.log(registerdAt, location, occurrenceType, km, user_id);
+        // console.log(registeredAt, location, occurrenceType, km, user_id);
 
         try {
             const token = authData?.token;
 
             // Check the time before sending the request
-            if (!checkDateTime(registerdAt)) {
+            if (!checkDateTime(registeredAt)) {
                 console.log('Invalid time');
                 return;
             }
@@ -82,7 +92,7 @@ const OccurrencesForm = () => {
             setKm('');
             setLocation('');
             setOccurrenceType('');
-            window.location.reload();
+            // window.location.reload();
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No server response');
@@ -170,9 +180,9 @@ const OccurrencesForm = () => {
                         className='OccurrencesForm-input'
                         type="datetime-local"
                         step={2}
-                        onChange={(e) => setRegisterdAt(e.target.value)}
+                        onChange={(e) => setRegisteredAt(e.target.value)}
                         placeholder='Time'
-                        value={registerdAt}
+                        value={registeredAt}
                     />
                 </div>
 
