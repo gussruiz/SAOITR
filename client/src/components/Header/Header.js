@@ -7,7 +7,6 @@ const LOGOUT_URL = '/logout';
 
 const handleLogout = async (e) => {
   e.preventDefault();
-
   const authData = JSON.parse(localStorage.getItem('authData'));
   const token = authData?.token;
   const id = authData?.id;
@@ -42,7 +41,7 @@ const handleLogout = async (e) => {
 const Header = () => {
 
   const handleTitleClick = () => {
-    navigate('/');
+    navigate('/', { replace: true });
   };
 
   const authData = JSON.parse(localStorage.getItem('authData'));

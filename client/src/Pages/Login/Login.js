@@ -49,7 +49,6 @@ const Login = () => {
                   id: responseJson.id,
                 }));
             
-                console.log(JSON.stringify(response?.data));
                 const token = response?.data?.tToken;
                 setAuth({ email, password, token });
                 setEmail('');
