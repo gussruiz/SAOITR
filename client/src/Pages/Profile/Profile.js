@@ -126,7 +126,8 @@ const Profile = () => {
                     },
                 }
             );
-            // clear input fields 
+            // clear input fields
+            window.location.reload();
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No server response');

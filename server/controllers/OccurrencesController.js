@@ -34,7 +34,14 @@ const createNewOccurence = async (req, res) => {
         path.join(__dirname, '..', 'model', 'occurrences.json'),
         JSON.stringify(data.occurrences)
     );
-    res.status(201).json({message: "Occurrence register completed successfully"});
+    res.status(201).json({
+        id: id,
+        registered_at: registered_at, 
+        local: local, 
+        occurrence_type: occurrence_type, 
+        km: km, 
+        user_id: user_id 
+    });
 }
 
 const updateOccurence = (req, res) => {
