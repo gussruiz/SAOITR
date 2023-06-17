@@ -48,7 +48,7 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
     return (
         <div className="modal">
             <div className="modal-content">
-            <span className="Modalclose" onClick={onClose}><FontAwesomeIcon icon={faX} /></span>
+                <span className="modal-close" onClick={onClose}><FontAwesomeIcon icon={faX} /></span>
 
                 <form onSubmit={handleUpdateOccurrence} className='updateForm'>
                     <div className='UpdateForm-conatiner_input'>
@@ -75,7 +75,7 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
                             placeholder={occurrence.km}
                         />
                     </div>
-                    <div className='UpdateForm-conatiner_input'> 
+                    <div className='UpdateForm-conatiner_input'>
                         <label htmlFor="time" className='updateForm-label'>
                             Time:
                         </label>
@@ -145,6 +145,9 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
 const OccurrencesDisplay = () => {
     const authData = JSON.parse(localStorage.getItem('authData'));
     const user_id = authData?.id;
+    const isLoggedIn = !!authData?.token;
+
+    const [sliderValue, setSliderValue] = useState(false);
 
     const [data, setData] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -168,10 +171,26 @@ const OccurrencesDisplay = () => {
         setIsModalOpen(true);
     };
 
+    const filteredData = sliderValue ? data.filter(item => item.user_id === user_id) : data;
+
+
     return (
         <>
+            {isLoggedIn ? (<>
+                <div className='sliderContainer'>
+                    <label className="switch">
+                        <input type="checkbox" onChange={() => setSliderValue(!sliderValue)} /> {/* Update the slider value */}
+                        <span className="slider">
+                            <span className="slider-label slider-label-right">All</span>
+                            <span className="slider-label slider-label-left">Yours</span>
+                        </span>
+                    </label>
+                </div>
+            </>
+            ) : (<></>)}
+
             <div className="grid-container">
-                {data.map((item) => (
+                {filteredData.map((item) => (
                     <div key={item.id} className="grid-item">
                         <div className="grid-item-content">
                             <p>Horário: {new Date(item.registered_at).toLocaleString('pt-BR', { timeZone: 'UTC' })}</p>
@@ -194,7 +213,7 @@ const OccurrencesDisplay = () => {
                                 <button className='buttons' onClick={() => openModal(item)}>
                                     <FontAwesomeIcon size='lg' icon={faPenToSquare} />
                                 </button>
-                                <button className='buttons'>
+                                <button className='buttons' onClick={() => console.log('Item deletado')}>
                                     <FontAwesomeIcon size='lg' icon={faTrash} />
                                 </button>
                             </div>

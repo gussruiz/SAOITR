@@ -1,3 +1,71 @@
+.sliderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 200px; /* Adjust the width as desired */
+  height: 34px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(139,0,255,1);
+  transition: .4s;
+  border-radius: 17px; /* Half of the height to create a rounded rectangle */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 30px; /* Adjust the height of the handle */
+  width: 90px; /* Adjust the width of the handle */
+  left: 2px; /* Adjust the left position of the handle */
+  bottom: 2px; /* Adjust the bottom position of the handle */
+  background-color: white;
+  transition: .4s;
+  border-radius: 17px; /* Adjust the border-radius to create a rectangle */
+}
+
+.slider-label {
+  font-family: 'Poppins',sans-serif;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px; /* Adjust the font size as desired */
+  color: white;
+  padding: 4px 8px; /* Adjust the padding as desired */
+}
+
+.slider-label-left {
+  left: 4px; /* Adjust the left position of the left label */
+}
+
+.slider-label-right {
+  right: 4px; /* Adjust the right position of the right label */
+}
+
+input:checked + .slider {
+  background-color: rgba(19,19,80,1);
+}
+
+input:checked + .slider:before {
+  transform: translateX(108px); /* Adjust the handle's position based on the width of the switch */
+}
+
+
 .buttons-container{
   position: absolute;
   top: 10px;
@@ -58,11 +126,15 @@
   justify-content: center;
 }
 
-.Modalclose {
+.modal-close {
   color: white;
   position: relative;
   top: -5px;
   left: 332px;
+}
+
+.modal-close:hover{
+  cursor: pointer;
 }
 
 .modal-content {
