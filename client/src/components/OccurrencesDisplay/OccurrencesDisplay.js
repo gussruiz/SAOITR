@@ -25,23 +25,31 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
 
         e.preventDefault();
         const requestData = {
-            location: newLocation === '' ? occurrence.locaion : newLocation,
+            local: newLocation === '' ? occurrence.local : newLocation,
             km: newKm === '' ? occurrence.km : newKm,
             registered_at: newRegisteredAt === '' ? occurrence.registered_at : newRegisteredAt,
             occurrence_type: newOccurrenceType === '' ? occurrence.occurrence_type : newOccurrenceType,
+            user_id: occurrence.user_id
         };
 
         console.log(requestData);
 
-        // const response = await axios.put(`/users/${userId}`,
-        //     JSON.stringify(requestData),
-        //     {
-        //         headers: { 
-        //             'Content-Type': 'application/json',
-        //             'Authorization': `Bearer ${token}`
-        //         },
-        //     }
-        // );
+        let occurrenceId = parseInt(occurrence.id);
+        try {
+            const response = await axios.put(`/occurrences/${occurrenceId}`,
+                JSON.stringify(requestData),
+                {
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                }
+            );
+            window.location.reload();
+        } catch (error) {
+            console.log(error)
+        }
+
 
     }
 
@@ -145,6 +153,7 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
 const OccurrencesDisplay = () => {
     const authData = JSON.parse(localStorage.getItem('authData'));
     const user_id = authData?.id;
+    const token = authData?.token;
     const isLoggedIn = !!authData?.token;
 
     const [sliderValue, setSliderValue] = useState(false);
@@ -170,6 +179,28 @@ const OccurrencesDisplay = () => {
         setSelectedItem(item);
         setIsModalOpen(true);
     };
+
+    const handleDeleteOcccurrence =  async (e, id, ocUserID) => {
+        e.preventDefault();
+        console.log(id);
+        let OccurrenceId = parseInt(id);
+        console.log('Local Storage '+ user_id);
+        console.log('Param from function '+ ocUserID)
+
+        try {
+            const response = await axios.delete(`/occurrences/${OccurrenceId}`,
+                {
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                }
+            );
+            // window.location.reload();
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const filteredData = sliderValue ? data.filter(item => item.user_id === user_id) : data;
 
@@ -213,7 +244,7 @@ const OccurrencesDisplay = () => {
                                 <button className='buttons' onClick={() => openModal(item)}>
                                     <FontAwesomeIcon size='lg' icon={faPenToSquare} />
                                 </button>
-                                <button className='buttons' onClick={() => console.log('Item deletado')}>
+                                <button className='buttons' onClick={(e) => handleDeleteOcccurrence(e, item.id, item.user_id)}>
                                     <FontAwesomeIcon size='lg' icon={faTrash} />
                                 </button>
                             </div>

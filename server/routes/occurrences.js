@@ -8,7 +8,7 @@ router.get('/occurrences', OccurrencesController.getAllOccurences);
 router.post('/occurrences', verifyJWT, OccurrencesController.createNewOccurence);
 router.get('/occurrences/:occurrenceId', verifyJWT, OccurrencesController.getOccurence);
 router.put('/occurrences/:occurrenceId', verifyJWT, OccurrencesController.updateOccurence);
-router.delete('/occurrences/:occurrenceId', verifyJWT, OccurrencesController.deleteOccurence);
+router.delete('/occurrences/:occurrenceId', verifyJWT, OccurrencesController.deleteOccurrence);
 
 
 module.exports = router;

@@ -45,19 +45,21 @@ const createNewOccurence = async (req, res) => {
 }
 
 const updateOccurence = (req, res) => {
-    const occurrence =  data.occurrences.find(oc => oc.id === parseInt(req.body.id));
-
+    let ocId = req.params.occurrenceId
+    ocId = parseInt(ocId) 
+    const occurrence =  data.occurrences.find(oc => oc.id === ocId);
     if(!occurrence) {
         return res.status(400).json({'message': `Occurrence ID: ${req.body.id} not found`});
     }
 
-    if(req.body.registered_at) occurrence.registered_at =  req.body.registered_at;
-    if(req.body.local) occurrence.local =  req.body.local;
-    if(req.body.occurrence_type) occurrence.occurrence_type =  req.body.occurrence_type;
-    if(req.body.km) occurrence.km =  req.body.km;
+    occurrence.registered_at =  req.body.registered_at;
+    occurrence.local =  req.body.local;
+    occurrence.occurrence_type =  req.body.occurrence_type;
+    occurrence.km =  req.body.km;
+    occurrence.user_id =  req.body.user_id;
 
     const filteredArray =  data.occurrences.filter(oc => oc.id !== parseInt(req.body.id));
-    const unsortedArray = [...filteredArray, occurrence];
+    const unsortedArray = [...filteredArray];
     data.setOccurrences(unsortedArray.sort((a, b) => a.id > b.id ? 1 : a.id < b.id ? -1 :0));
 
     res.status(200).json({
@@ -70,17 +72,21 @@ const updateOccurence = (req, res) => {
     });
 }
 
-const deleteOccurence = (req, res) => {
-    const occurrence =  data.occurrences.find(oc => oc.id === parseInt(req.body.id));
-    if(!occurrence) {
-        return res.status(400).json({'message': `Occurrence ID: ${req.body.id} not found`});
+const deleteOccurrence = (req, res) => {
+    const ocId = parseInt(req.params.occurrenceId);
+    const occurrence = data.occurrences.find((oc) => oc.id === ocId);
+  
+    if (!occurrence) {
+      return res.status(400).json({ message: `Occurrence ID: ${ocId} not found` });
     }
-    const filteredArray =  data.occurrences.filter(oc => oc.id !== parseInt(req.body.id));
-    data.setOccurrences([...filteredArray]);
-    res.status(200).json({
-        message: 'Occurrence deleted successfully'
-    });
-}
+  
+    const filteredArray = data.occurrences.filter((oc) => oc.id !== ocId);
+    data.setOccurrences(filteredArray);
+  
+    console.log(`Occurrence ${ocId} deleted`);
+    
+    res.status(200).json({ message: 'Occurrence deleted successfully' });
+  };
 
 const getOccurence = (req, res) => {
     const occurrence =  data.occurrences.find(oc => oc.id === parseInt(req.body.id));
@@ -94,6 +100,6 @@ module.exports = {
     getAllOccurences, 
     createNewOccurence,
     updateOccurence,
-    deleteOccurence,
+    deleteOccurrence,
     getOccurence
 }
