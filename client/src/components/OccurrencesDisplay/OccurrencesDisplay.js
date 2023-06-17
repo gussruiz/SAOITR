@@ -7,12 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Modal = ({ isOpen, onClose, occurrence }) => {
 
-    const [newKm, setNewKm] = useState('');
-
     const [newLocation, setNewLocation] = useState('');
-
+    const [newKm, setNewKm] = useState('');
     const [newRegisteredAt, setNewRegisteredAt] = useState('');
-
     const [newOccurrenceType, setNewOccurrenceType] = useState('');
 
 
@@ -20,79 +17,125 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
         return null;
     }
 
+    const handleUpdateOccurrence = async (e) => {
+
+        const authData = JSON.parse(localStorage.getItem('authData'));
+        const userId = authData?.id;
+        const token = authData?.token;
+
+        e.preventDefault();
+        const requestData = {
+            location: newLocation === '' ? occurrence.locaion : newLocation,
+            km: newKm === '' ? occurrence.km : newKm,
+            registered_at: newRegisteredAt === '' ? occurrence.registered_at : newRegisteredAt,
+            occurrence_type: newOccurrenceType === '' ? occurrence.occurrence_type : newOccurrenceType,
+        };
+
+        console.log(requestData);
+
+        // const response = await axios.put(`/users/${userId}`,
+        //     JSON.stringify(requestData),
+        //     {
+        //         headers: { 
+        //             'Content-Type': 'application/json',
+        //             'Authorization': `Bearer ${token}`
+        //         },
+        //     }
+        // );
+
+    }
+
     return (
         <div className="modal">
             <div className="modal-content">
-                <span className="close" onClick={onClose}><FontAwesomeIcon icon={faX} /></span>
+            <span className="Modalclose" onClick={onClose}><FontAwesomeIcon icon={faX} /></span>
 
-                <form>
-                    <label htmlFor="local">
-                        Local:
-                    </label>
-                    <input
-                        id='local'
-                        type='text'
-                        placeholder={occurrence.local}
-                    />
-                    <br />
-                    <br />
-                    <label htmlFor="km">
-                        KM:
-                    </label>
-                    <input
-                        id='local'
-                        type='text'
-                        placeholder={occurrence.km}
-                    />
-                    <br />
-                    <br />
-                    <label htmlFor="time">
-                        Time:
-                    </label>
-                    <input
-                        id='time'
-                        type='datetime-local'
-                        placeholder={occurrence.registered_at.toLocaleString()}
-                    />
-                    <br />
-                    <br />
-                    <select
-                        id='option'
-                    >
-                        <option value='0'>
-                            Select an option
-                        </option>
-                        <option value='1'>
-                            Atropelamento
-                        </option>
-                        <option value='2'>
-                            Deslizamento
-                        </option>
-                        <option value='3'>
-                            Colisão frontal
-                        </option>
-                        <option value='4'>
-                            Capotagem
-                        </option>
-                        <option value='5'>
-                            Saída de pista
-                        </option>
-                        <option value='6'>
-                            Batida em objeto fixo
-                        </option>
-                        <option value='7'>
-                            Veículo avariado
-                        </option>
-                        <option value='8'>
-                            Colisão com motocicletas
-                        </option>
-                        <option value='9'>
-                            Colisão no mesmo sentido ou transversal
-                        </option>
-                        <option value='10'>
-                            Construção
-                        </option>
-                    </select>
+                <form onSubmit={handleUpdateOccurrence} className='updateForm'>
+                    <div className='UpdateForm-conatiner_input'>
+                        <label htmlFor="local" className='updateForm-label'>
+                            Location:
+                        </label>
+                        <input
+                            className='updateForm-input'
+                            id='local'
+                            type='text'
+                            onChange={(e) => setNewLocation(e.target.value)}
+                            placeholder={occurrence.local}
+                        />
+                    </div>
+                    <div className='UpdateForm-conatiner_input'>
+                        <label htmlFor="km" className='updateForm-label'>
+                            KM:
+                        </label>
+                        <input
+                            className='updateForm-input'
+                            id='local'
+                            type='text'
+                            onChange={(e) => setNewKm(e.target.value)}
+                            placeholder={occurrence.km}
+                        />
+                    </div>
+                    <div className='UpdateForm-conatiner_input'> 
+                        <label htmlFor="time" className='updateForm-label'>
+                            Time:
+                        </label>
+                        <input
+                            className="updateForm-input"
+                            id="time"
+                            type="datetime-local"
+                            step={2}
+                            onChange={(e) => setNewRegisteredAt(e.target.value)}
+                            placeholder="Enter the date please"
+                        />
+                    </div>
+                    <div className='UpdateForm-conatiner_input'>
+                        <label htmlFor="option" className='updateForm-label'>
+                            Option:
+                        </label>
+                        <select
+                            className='updateForm-input'
+                            id='option'
+                            onChange={(e) => setNewOccurrenceType(e.target.value)}
+                        >
+                            <option className='updateForm-option' value='0'>
+                                Select an option
+                            </option>
+                            <option className='updateForm-option' value='1'>
+                                Atropelamento
+                            </option>
+                            <option className='updateForm-option' value='2'>
+                                Deslizamento
+                            </option>
+                            <option className='updateForm-option' value='3'>
+                                Colisão frontal
+                            </option>
+                            <option className='updateForm-option' value='4'>
+                                Capotagem
+                            </option>
+                            <option className='updateForm-option' value='5'>
+                                Saída de pista
+                            </option>
+                            <option className='updateForm-option' value='6'>
+                                Batida em objeto fixo
+                            </option>
+                            <option className='updateForm-option' value='7'>
+                                Veículo avariado
+                            </option>
+                            <option className='updateForm-option' value='8'>
+                                Colisão com motocicletas
+                            </option>
+                            <option className='updateForm-option' value='9'>
+                                Colisão no mesmo sentido ou transversal
+                            </option>
+                            <option className='updateForm-option' value='10'>
+                                Construção
+                            </option>
+                        </select>
+                    </div>
+
+                    <button className='updateForm-button' type='submit'>
+                        Update
+                    </button>
                 </form>
             </div>
         </div>
@@ -115,7 +158,6 @@ const OccurrencesDisplay = () => {
         try {
             const response = await axios.get('/occurrences');
             setData(response.data);
-            console.log(data);
         } catch (error) {
             console.log(error);
         }
