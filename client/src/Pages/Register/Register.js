@@ -73,8 +73,7 @@ const Register = () => {
 			setErrMsg("Invalid Entry");
 			return;
 		}
-		// console.log(user, pwd, email);
-		// setSucess(true);
+
 		try {
 			const response = await axios.post(REGISTER_URL,
 				JSON.stringify({name, email, password: md5(password) }),

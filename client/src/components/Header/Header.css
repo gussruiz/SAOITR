@@ -22,6 +22,10 @@ h1 {
   margin-left: 20px;
 }
 
+h1:hover{
+  cursor: pointer;
+}
+
 
   .home-button {
     font-family: 'Poppins',sans-serif;

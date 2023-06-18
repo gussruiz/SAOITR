@@ -17,11 +17,22 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
         return null;
     }
 
+    function checkDateTime(dateTime) {
+        const selectedDateTime = new Date(dateTime);
+        const currentDateTime = new Date();
+        return selectedDateTime <= currentDateTime;
+    }
+
     const handleUpdateOccurrence = async (e) => {
 
         const authData = JSON.parse(localStorage.getItem('authData'));
         const userId = authData?.id;
         const token = authData?.token;
+
+        
+        // const date = new Date(newRegisteredAt);
+        // let datefix = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+        // const isoDate = datefix.toISOString();
 
         e.preventDefault();
         const requestData = {
@@ -33,6 +44,11 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
         };
     
         console.log(requestData);
+
+        if (!checkDateTime(newRegisteredAt)) {
+            console.log('Invalid time');
+            return;
+        }
 
         let occurrenceId = parseInt(occurrence.id);
         try {

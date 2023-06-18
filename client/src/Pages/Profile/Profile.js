@@ -135,7 +135,7 @@ const Profile = () => {
                 },
             }
         );
-            // localStorage.removeItem('authData');
+        localStorage.removeItem('authData');
         } catch (error) {
             
         }
@@ -170,7 +170,7 @@ const Profile = () => {
                         aria-describedby="uidnote"
                         onFocus={() => setUserFocus(true)}
                         onBlur={() => setUserFocus(false)}
-                        placeholder="Name"
+                        placeholder={data.name}
                         className="inputProfile"
                     />
 
@@ -202,7 +202,7 @@ const Profile = () => {
                         aria-describedby="eidnote"
                         onFocus={() => setEmailFocus(true)}
                         onBlur={() => setEmailFocus(false)}
-                        placeholder="E-mail"
+                        placeholder={data.email}
                         className="inputProfile"
                     />
 

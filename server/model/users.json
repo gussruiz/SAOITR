@@ -1,1 +1,14 @@
-[{"id":3534697078456320,"name":"rui","email":"rui@gmail.com","password":"$2b$10$jR3bSJ1JbJA9zq4I1F7WB.ZCNqAqP9WeY75ZTxmoqX5/2h1zzWvLa"},{"id":3538002303254528,"name":"123","email":"123@gmail.com","password":"$2b$10$GuEMUbflSEViFFKI6mYEduVZF/PU9N04IWahh4MCqq8zs7rA5s7qu"}]
+[
+    {
+        "id": 3534697078456320,
+        "name": "rui",
+        "email": "rui@gmail.com",
+        "password": "$2b$10$jR3bSJ1JbJA9zq4I1F7WB.ZCNqAqP9WeY75ZTxmoqX5/2h1zzWvLa"
+    },
+    {
+        "id": 3538015706152960,
+        "name": "123",
+        "email": "1234@gmail.com",
+        "password": "$2b$10$7CDdqxa8n6ImrIrQDG/vaedCK86soXXP.lok7eGrZxBO6pLAZIAhO"
+    }
+]
