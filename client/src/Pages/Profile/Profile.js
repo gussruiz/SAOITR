@@ -121,8 +121,25 @@ const Profile = () => {
     }
 
     const handleDelete =  async (e) => {
-        e.preventDefault();
+        const authData = JSON.parse(localStorage.getItem('authData'));
+        const userId = authData?.id;
+        const token = authData?.token;
 
+        e.preventDefault();
+        try {
+            const response = await axios.delete(`/users/${userId}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            }
+        );
+            // localStorage.removeItem('authData');
+        } catch (error) {
+            
+        }
+        
         console.log('Deletado com sucesso');
     }
 

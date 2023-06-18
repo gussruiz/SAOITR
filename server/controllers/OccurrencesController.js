@@ -44,7 +44,7 @@ const createNewOccurence = async (req, res) => {
     });
 }
 
-const updateOccurence = (req, res) => {
+const updateOccurence = async (req, res) => {
     let ocId = req.params.occurrenceId
     ocId = parseInt(ocId) 
     const occurrence =  data.occurrences.find(oc => oc.id === ocId);
@@ -62,6 +62,11 @@ const updateOccurence = (req, res) => {
     const unsortedArray = [...filteredArray];
     data.setOccurrences(unsortedArray.sort((a, b) => a.id > b.id ? 1 : a.id < b.id ? -1 :0));
 
+    await fsPromises.writeFile(
+        path.join(__dirname, '..', 'model', 'occurrences.json'),
+        JSON.stringify(data.occurrences)
+    );
+
     res.status(200).json({
         id: occurrence.id,
         registered_at: occurrence.registered_at, 
@@ -72,7 +77,7 @@ const updateOccurence = (req, res) => {
     });
 }
 
-const deleteOccurrence = (req, res) => {
+const deleteOccurrence = async (req, res) => {
     const ocId = parseInt(req.params.occurrenceId);
     const occurrence = data.occurrences.find((oc) => oc.id === ocId);
   
@@ -82,6 +87,11 @@ const deleteOccurrence = (req, res) => {
   
     const filteredArray = data.occurrences.filter((oc) => oc.id !== ocId);
     data.setOccurrences(filteredArray);
+
+    await fsPromises.writeFile(
+        path.join(__dirname, '..', 'model', 'occurrences.json'),
+        JSON.stringify(data.occurrences)
+    );
   
     console.log(`Occurrence ${ocId} deleted`);
     

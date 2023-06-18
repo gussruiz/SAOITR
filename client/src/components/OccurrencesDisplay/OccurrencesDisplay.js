@@ -31,7 +31,7 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
             occurrence_type: newOccurrenceType === '' ? occurrence.occurrence_type : newOccurrenceType,
             user_id: occurrence.user_id
         };
-
+    
         console.log(requestData);
 
         let occurrenceId = parseInt(occurrence.id);
@@ -89,11 +89,10 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
                         </label>
                         <input
                             className="updateForm-input"
-                            id="time"
                             type="datetime-local"
                             step={2}
                             onChange={(e) => setNewRegisteredAt(e.target.value)}
-                            placeholder="Enter the date please"
+                            placeholder='Time'
                         />
                     </div>
                     <div className='UpdateForm-conatiner_input'>
@@ -196,7 +195,7 @@ const OccurrencesDisplay = () => {
                     },
                 }
             );
-            // window.location.reload();
+            window.location.reload();
         } catch (error) {
             console.log(error)
         }
@@ -226,16 +225,16 @@ const OccurrencesDisplay = () => {
                         <div className="grid-item-content">
                             <p>Horário: {new Date(item.registered_at).toLocaleString('pt-BR', { timeZone: 'UTC' })}</p>
                             <p>Local: {item.local}</p>
-                            {item.occurrence_type === 1 && <p>Tipo: Atropelamento</p>}
-                            {item.occurrence_type === 2 && <p>Tipo: Deslizamento</p>}
-                            {item.occurrence_type === 3 && <p>Tipo: Colisão frontal</p>}
-                            {item.occurrence_type === 4 && <p>Tipo: Capotagem</p>}
-                            {item.occurrence_type === 5 && <p>Tipo: Saída de pista</p>}
-                            {item.occurrence_type === 6 && <p>Tipo: Batida em objeto fixo</p>}
-                            {item.occurrence_type === 7 && <p>Tipo: Veículo avariado</p>}
-                            {item.occurrence_type === 8 && <p>Tipo: Colisão com motocicletas</p>}
-                            {item.occurrence_type === 9 && <p>Tipo: Colisão no mesmo sentido ou transversal</p>}
-                            {item.occurrence_type === 10 && <p>Tipo: Construção</p>}
+                            {parseInt(item.occurrence_type) === 1 && <p>Tipo: Atropelamento</p>}
+                            {parseInt(item.occurrence_type) === 2 && <p>Tipo: Deslizamento</p>}
+                            {parseInt(item.occurrence_type) === 3 && <p>Tipo: Colisão frontal</p>}
+                            {parseInt(item.occurrence_type) === 4 && <p>Tipo: Capotagem</p>}
+                            {parseInt(item.occurrence_type) === 5 && <p>Tipo: Saída de pista</p>}
+                            {parseInt(item.occurrence_type) === 6 && <p>Tipo: Batida em objeto fixo</p>}
+                            {parseInt(item.occurrence_type) === 7 && <p>Tipo: Veículo avariado</p>}
+                            {parseInt(item.occurrence_type) === 8 && <p>Tipo: Colisão com motocicletas</p>}
+                            {parseInt(item.occurrence_type) === 9 && <p>Tipo: Colisão no mesmo sentido ou transversal</p>}
+                            {parseInt(item.occurrence_type) === 10 && <p>Tipo: Construção</p>}
                             <p>KM: {item.km}</p>
                         </div>
 

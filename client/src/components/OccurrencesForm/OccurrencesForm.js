@@ -47,9 +47,10 @@ const OccurrencesForm = () => {
     const handleNewOccurrence = async (e) => {
         e.preventDefault();
 
+
         const date = new Date(registeredAt);
-        const isoDate = date.toISOString();
-        console.log(isoDate);
+        let datefix = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+        const isoDate = datefix.toISOString();
 
         const authData = JSON.parse(localStorage.getItem('authData'));
         const user_id = authData?.id;
