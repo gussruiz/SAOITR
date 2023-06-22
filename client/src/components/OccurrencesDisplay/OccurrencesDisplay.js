@@ -26,23 +26,17 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
     const handleUpdateOccurrence = async (e) => {
 
         const authData = JSON.parse(localStorage.getItem('authData'));
-        const userId = authData?.id;
         const token = authData?.token;
-
-        
-        // const date = new Date(newRegisteredAt);
-        // let datefix = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
-        // const isoDate = datefix.toISOString();
 
         e.preventDefault();
         const requestData = {
             local: newLocation === '' ? occurrence.local : newLocation,
-            km: newKm === '' ? occurrence.km : newKm,
+            km: newKm === '' ? parseInt(occurrence.km) : parseInt(newKm),
             registered_at: newRegisteredAt === '' ? occurrence.registered_at : newRegisteredAt,
-            occurrence_type: newOccurrenceType === '' ? occurrence.occurrence_type : newOccurrenceType,
+            occurrence_type: newOccurrenceType === '' ? parseInt(occurrence.occurrence_type) : parseInt(newOccurrenceType),
             user_id: occurrence.user_id
         };
-    
+
         console.log(requestData);
 
         if (!checkDateTime(newRegisteredAt)) {
@@ -55,7 +49,7 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
             const response = await axios.put(`/occurrences/${occurrenceId}`,
                 JSON.stringify(requestData),
                 {
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
@@ -65,8 +59,6 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
         } catch (error) {
             console.log(error)
         }
-
-
     }
 
     return (
@@ -103,13 +95,7 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
                         <label htmlFor="time" className='updateForm-label'>
                             Time:
                         </label>
-                        <input
-                            className="updateForm-input"
-                            type="datetime-local"
-                            step={2}
-                            onChange={(e) => setNewRegisteredAt(e.target.value)}
-                            placeholder='Time'
-                        />
+                        <input type="datetime-local" step="1" className="updateForm-input" id="data-input" onChange={(e) => setNewRegisteredAt(e.target.value)}/>
                     </div>
                     <div className='UpdateForm-conatiner_input'>
                         <label htmlFor="option" className='updateForm-label'>
@@ -172,8 +158,8 @@ const OccurrencesDisplay = () => {
     const isLoggedIn = !!authData?.token;
 
     const [sliderValue, setSliderValue] = useState(false);
-
     const [data, setData] = useState([]);
+    const [dataUser, setDataUser] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -182,9 +168,41 @@ const OccurrencesDisplay = () => {
     }, []);
 
     const fetchData = async () => {
+        const userId = authData?.id;
+
         try {
             const response = await axios.get('/occurrences');
             setData(response.data);
+
+            const res = await axios.get(`/occurrences/users/${userId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            setDataUser(res.data);
+            console.log(res.data);
+            console.log(dataUser);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleDeleteOcccurrence = async (e, id, ocUserID) => {
+        e.preventDefault();
+        console.log(id);
+        let OccurrenceId = parseInt(id);
+        console.log('Local Storage ' + user_id);
+        console.log('Param from function ' + ocUserID);
+
+        try {
+            const response = await axios.delete(`/occurrences/${OccurrenceId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            window.location.reload();
         } catch (error) {
             console.log(error);
         }
@@ -195,45 +213,23 @@ const OccurrencesDisplay = () => {
         setIsModalOpen(true);
     };
 
-    const handleDeleteOcccurrence =  async (e, id, ocUserID) => {
-        e.preventDefault();
-        console.log(id);
-        let OccurrenceId = parseInt(id);
-        console.log('Local Storage '+ user_id);
-        console.log('Param from function '+ ocUserID)
-
-        try {
-            const response = await axios.delete(`/occurrences/${OccurrenceId}`,
-                {
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                }
-            );
-            window.location.reload();
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const filteredData = sliderValue ? data.filter(item => item.user_id === user_id) : data;
-
+    let filteredData = sliderValue ? data.filter((e) => e.user_id === user_id) : data;
+    // let filteredData = sliderValue ? dataUser : data;
+    // filteredData = Array.isArray(filteredData) ? filteredData : []; // Ensure filteredData is an array
 
     return (
         <>
-            {isLoggedIn ? (<>
-                <div className='sliderContainer'>
+            {isLoggedIn && (
+                <div className="sliderContainer">
                     <label className="switch">
-                        <input type="checkbox" onChange={() => setSliderValue(!sliderValue)} /> {/* Update the slider value */}
+                        <input type="checkbox" onChange={() => setSliderValue(!sliderValue)} />
                         <span className="slider">
                             <span className="slider-label slider-label-right">All</span>
                             <span className="slider-label slider-label-left">Yours</span>
                         </span>
                     </label>
                 </div>
-            </>
-            ) : (<></>)}
+            )}
 
             <div className="grid-container">
                 {filteredData.map((item) => (
@@ -254,16 +250,16 @@ const OccurrencesDisplay = () => {
                             <p>KM: {item.km}</p>
                         </div>
 
-                        {item.user_id === user_id &&
-                            <div className='buttons-container'>
-                                <button className='buttons' onClick={() => openModal(item)}>
-                                    <FontAwesomeIcon size='lg' icon={faPenToSquare} />
+                        {item.user_id === user_id && (
+                            <div className="buttons-container">
+                                <button className="buttons" onClick={() => openModal(item)}>
+                                    <FontAwesomeIcon size="lg" icon={faPenToSquare} />
                                 </button>
-                                <button className='buttons' onClick={(e) => handleDeleteOcccurrence(e, item.id, item.user_id)}>
-                                    <FontAwesomeIcon size='lg' icon={faTrash} />
+                                <button className="buttons" onClick={(e) => handleDeleteOcccurrence(e, item.id, item.user_id)}>
+                                    <FontAwesomeIcon size="lg" icon={faTrash} />
                                 </button>
                             </div>
-                        }
+                        )}
                     </div>
                 ))}
             </div>
@@ -273,6 +269,6 @@ const OccurrencesDisplay = () => {
             )}
         </>
     );
-}
+};
 
 export default OccurrencesDisplay;

@@ -400,6 +400,8 @@ paths:
             schema:
               type: object
               properties:
+                id:
+                  type: integer
                 registered_at: 
                   type: string #datetime
                 local:
@@ -410,7 +412,8 @@ paths:
                   type: integer
                 user_id:
                   type: integer
-              required:                
+              required:      
+                - id
                 - registered_at
                 - local
                 - occurrence_tipe

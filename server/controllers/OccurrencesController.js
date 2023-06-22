@@ -96,12 +96,31 @@ const deleteOccurrence = async (req, res) => {
     console.log(`Occurrence ${ocId} deleted`);
     
     res.status(200).json({ message: 'Occurrence deleted successfully' });
-  };
+};
+
+
+const getUsersOccurrences = (req, res) => {
+    const userId = parseInt(req.params.userId);
+    const occurrences = data.occurrences.find((oc) => oc.user_id === userId);
+
+    if (!occurrences) {
+        return res.json([]);
+    }
+
+    let teste = [];
+    if(typeof(occurrences) !== 'object') {
+        return res.json(occurrences);
+    }else{
+        teste.push(occurrences);
+        return res.json(teste);
+    }
+}
+
 
 const getOccurence = (req, res) => {
     const occurrence =  data.occurrences.find(oc => oc.id === parseInt(req.body.id));
     if(!occurrence) {
-        return res.status(400).json({'message': `Occurrence ID: ${req.body.id} not found`});
+        return res.json([]);
     }
     res.json(occurrence);
 }
@@ -111,5 +130,6 @@ module.exports = {
     createNewOccurence,
     updateOccurence,
     deleteOccurrence,
+    getUsersOccurrences,
     getOccurence
 }
