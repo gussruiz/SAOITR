@@ -146,8 +146,7 @@ const deleteOccurrence = async (req, res) => {
 
 const getUsersOccurrences = (req, res) => {
     const userId = parseInt(req.params.userId);
-    const occurrences = data.occurrences.find((oc) => oc.user_id === userId);
-    
+    const occurrences = data.occurrences.find((oc) => {oc.user_id === userId});
     if (!occurrences) {
         return res.status(400).json([]);
     }
@@ -158,15 +157,16 @@ const getUsersOccurrences = (req, res) => {
         return res.status(401).json({ message: "Credentials do not correspond to any on the database" });
     }
     
+    const userOccurrences = data.occurrences.filter((oc) => oc.user_id === userId);
+    console.log(userOccurrences);
     try {
-        let teste = [];
-        teste.push(occurrences);
-        console.log(teste);
-        return res.status(200).json(teste);
+        return res.status(200).json(userOccurrences);
     } catch (error) {
         console.log(error);
         return res.status(500).json({"message": "Internal Error server"});
     }
+
+
 }
 
 

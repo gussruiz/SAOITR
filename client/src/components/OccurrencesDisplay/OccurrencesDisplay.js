@@ -29,11 +29,7 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
         const authData = JSON.parse(localStorage.getItem('authData'));
         const token = authData?.token;
 
-        // const date = new Date(newRegisteredAt);
-        // let datefix = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
-        // const isoDate = datefix.toISOString();
-
-        const requestData = {
+        let requestData = {
             local: newLocation === '' ? occurrence.local : newLocation,
             km: newKm === '' ? parseInt(occurrence.km) : parseInt(newKm),
             registered_at: newRegisteredAt === '' ? occurrence.registered_at : newRegisteredAt,
@@ -44,6 +40,20 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
         console.log(requestData);
 
         if (newRegisteredAt !== ''){
+
+            const date = new Date(newRegisteredAt);
+            let datefix = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+            const isoDate = datefix.toISOString();
+
+            requestData = {
+                local: newLocation === '' ? occurrence.local : newLocation,
+                km: newKm === '' ? parseInt(occurrence.km) : parseInt(newKm),
+                registered_at: newRegisteredAt === '' ? occurrence.registered_at : isoDate,
+                occurrence_type: newOccurrenceType === '' ? parseInt(occurrence.occurrence_type) : parseInt(newOccurrenceType),
+                user_id: occurrence.user_id
+            };
+
+
             if (!checkDateTime(newRegisteredAt)) {
                 console.log('Invalid time');
                 return;
@@ -195,6 +205,7 @@ const OccurrencesDisplay = () => {
             });
             let teste = [];
             teste = res.data;
+            console.log(teste)
             setDataUser(teste)
         } catch (error) {
             console.log(error)
