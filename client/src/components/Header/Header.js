@@ -18,15 +18,14 @@ const handleLogout = async (e) => {
 
   try {
     const response = await axios.post(
-      LOGOUT_URL,
-      JSON.stringify({ id: id }),
-      {
-        headers: { 'Content-Type': 'application/json', 'authorization': `Bearer ${token}` },
-      },
+        LOGOUT_URL,
+        JSON.stringify({ id: id }),
+        {
+          headers: { 'Content-Type': 'application/json', 'authorization': `Bearer ${token}` },
+        },
       );
       console.log(id);
 
-    // Clear the authData from the local storage
     localStorage.removeItem('authData');
     console.log('Logged out successfully');
     window.location.reload();

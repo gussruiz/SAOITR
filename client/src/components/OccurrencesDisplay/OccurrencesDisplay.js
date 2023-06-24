@@ -24,11 +24,15 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
     }
 
     const handleUpdateOccurrence = async (e) => {
+        e.preventDefault();
 
         const authData = JSON.parse(localStorage.getItem('authData'));
         const token = authData?.token;
 
-        e.preventDefault();
+        // const date = new Date(newRegisteredAt);
+        // let datefix = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+        // const isoDate = datefix.toISOString();
+
         const requestData = {
             local: newLocation === '' ? occurrence.local : newLocation,
             km: newKm === '' ? parseInt(occurrence.km) : parseInt(newKm),
@@ -165,28 +169,35 @@ const OccurrencesDisplay = () => {
 
     useEffect(() => {
         fetchData();
+        fetchUserOccurrences();
     }, []);
 
     const fetchData = async () => {
-        const userId = authData?.id;
-
         try {
             const response = await axios.get('/occurrences');
             setData(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
+    const fetchUserOccurrences = async () => {
+        const userId = authData?.id;
+
+        try {
             const res = await axios.get(`/occurrences/users/${userId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
             });
-            setDataUser(res.data);
-            console.log(res.data);
-            console.log(dataUser);
+            let teste = [];
+            teste = res.data;
+            setDataUser(teste)
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
-    };
+    }
 
     const handleDeleteOcccurrence = async (e, id, ocUserID) => {
         e.preventDefault();
@@ -213,9 +224,8 @@ const OccurrencesDisplay = () => {
         setIsModalOpen(true);
     };
 
-    let filteredData = sliderValue ? data.filter((e) => e.user_id === user_id) : data;
-    // let filteredData = sliderValue ? dataUser : data;
-    // filteredData = Array.isArray(filteredData) ? filteredData : []; // Ensure filteredData is an array
+    // let filteredData = sliderValue ? data.filter((e) => e.user_id === user_id) : data;
+    let filteredData = sliderValue ? dataUser : data;
 
     return (
         <>
