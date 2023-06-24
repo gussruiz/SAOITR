@@ -220,7 +220,7 @@ const deleteUser = async (req, res) => {
     dataOC.setOccurrences(filteredOccurrences);
   
     const updatedUsers = usersDB.users.filter((person) => person.id !== userId);
-    // usersDB.setUsers(updatedUsers);
+    usersDB.setUsers(updatedUsers);
   
     try {
       await fsPromises.writeFile(

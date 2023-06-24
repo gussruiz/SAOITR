@@ -67,7 +67,7 @@ const updateOccurence = async (req, res) => {
         JSON.stringify(data.occurrences)
     );
 
-    res.status(200).json({
+    res.status(201).json({
         id: occurrence.id,
         registered_at: occurrence.registered_at, 
         local: occurrence.local, 
@@ -101,6 +101,12 @@ const deleteOccurrence = async (req, res) => {
 
 const getUsersOccurrences = (req, res) => {
     const userId = parseInt(req.params.userId);
+    // let arreyToReturn = [];
+    // for (let index = 0; index < data.occurrences; index++) {
+    //     const element = array[index];
+    //     got
+    // }
+    // const occurrences = data.occurrences.find((oc) => {if(oc.user_id === userId){arreyToReturn.push(oc)}});
     const occurrences = data.occurrences.find((oc) => oc.user_id === userId);
 
     if (!occurrences) {
@@ -114,6 +120,8 @@ const getUsersOccurrences = (req, res) => {
         teste.push(occurrences);
         return res.json(teste);
     }
+
+    // res.json(arreyToReturn);
 }
 
 

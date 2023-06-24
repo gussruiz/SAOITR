@@ -222,7 +222,7 @@ const OccurrencesDisplay = () => {
             {isLoggedIn && (
                 <div className="sliderContainer">
                     <label className="switch">
-                        <input type="checkbox" onChange={() => setSliderValue(!sliderValue)} />
+                        <input type="checkbox" onChange={() => setSliderValue(!sliderValue)}/>
                         <span className="slider">
                             <span className="slider-label slider-label-right">All</span>
                             <span className="slider-label slider-label-left">Yours</span>
