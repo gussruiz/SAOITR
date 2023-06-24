@@ -43,9 +43,11 @@ const Modal = ({ isOpen, onClose, occurrence }) => {
 
         console.log(requestData);
 
-        if (!checkDateTime(newRegisteredAt)) {
-            console.log('Invalid time');
-            return;
+        if (newRegisteredAt !== ''){
+            if (!checkDateTime(newRegisteredAt)) {
+                console.log('Invalid time');
+                return;
+            }
         }
 
         let occurrenceId = parseInt(occurrence.id);
