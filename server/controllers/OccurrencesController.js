@@ -146,8 +146,10 @@ const deleteOccurrence = async (req, res) => {
 
 const getUsersOccurrences = (req, res) => {
     const userId = parseInt(req.params.userId);
-    const occurrences = data.occurrences.find((oc) => {oc.user_id === userId});
-    if (!occurrences) {
+    const userOccurrences = data.occurrences.filter((oc) => oc.user_id === userId);
+    console.log(userOccurrences);
+
+    if (!userOccurrences) {
         return res.status(400).json([]);
     }
 
@@ -157,8 +159,6 @@ const getUsersOccurrences = (req, res) => {
         return res.status(401).json({ message: "Credentials do not correspond to any on the database" });
     }
     
-    const userOccurrences = data.occurrences.filter((oc) => oc.user_id === userId);
-    console.log(userOccurrences);
     try {
         return res.status(200).json(userOccurrences);
     } catch (error) {
