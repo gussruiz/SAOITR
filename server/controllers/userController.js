@@ -3,11 +3,6 @@ const usersDB = {
     setUsers: function (data) { this.users = data }
 }
 
-const dataOC = {
-    occurrences: require('../model/occurrences.json'),
-    setOccurrences: function (data) { this.occurrences = data }
-};
-
 const uuid = require('uuid-int');
 
 const fsPromises = require('fs').promises;
@@ -19,6 +14,7 @@ require('dotenv').config();
 const handleNewUser = async (req, res) => {
     const { name, password, email } = req.body;
     if (!name || !password || !email) return res.status(400).json({ 'message': 'User name and password are required' });
+    if (email.length < 10) return res.status(400).json({ 'message': 'E-mail must be bigger than 10 characters' });
 
     const duplicate = usersDB.users.find(person => person.email === email);
     if (duplicate) return res.status(422).json({ message: "E-mail already been registered" });
@@ -241,11 +237,7 @@ const deleteUser = async (req, res) => {
             JSON.stringify(updatedUsers)
 
         );
-        await fsPromises.writeFile(
-            path.join(__dirname, '..', 'model', 'occurrences.json'),
-            JSON.stringify(dataOC.occurrences)
-        );
-            console.log(`User ID: ${userId} has been deleted`);
+        console.log(`User ID: ${userId} has been deleted`);
         return res.status(200).json({ message: `User ID: ${userId} has been deleted` });
 
     } catch (error) {

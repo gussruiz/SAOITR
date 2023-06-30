@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import './Register.css'
 import md5 from 'md5'; 
 
-const USER_REGEX = /^.{2,10}$/i;
+const USER_REGEX = /^.{2,125}$/i;
 const PWD_REGEX = /^.{2,125}$/i;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]{2,125}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
 

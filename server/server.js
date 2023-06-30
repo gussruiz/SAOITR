@@ -13,5 +13,5 @@ app.use(cookieParser());
 app.use('/', users);
 app.use('/', occurrences);
 
-const PORT = process.env.PORT || 4444;
+const PORT = process.env.PORT || 24444;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

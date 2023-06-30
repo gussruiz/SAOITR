@@ -1,1 +1,10 @@
-[{"id":1,"registered_at":"2023-06-05 21:41:11","local":"Av. Paulista","occurrence_type":1,"km":"345","user_id":3534697078456320},{"id":2,"registered_at":"2023-06-14T19:14:56.000Z","local":"2342","occurrence_type":6,"km":2342,"user_id":3540153758908416},{"id":3,"registered_at":"2023-06-28T19:15:42.000Z","local":"123","occurrence_type":3,"km":123,"user_id":3540153895223296}]
+[
+    {
+        "id": 2,
+        "registered_at": "2023-06-01T21:26:51.000Z",
+        "local": "BR-376",
+        "occurrence_type": 5,
+        "km": 4,
+        "user_id": 3540170380935168
+    }
+]

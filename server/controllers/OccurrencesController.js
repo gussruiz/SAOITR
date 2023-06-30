@@ -147,7 +147,7 @@ const deleteOccurrence = async (req, res) => {
 const getUsersOccurrences = (req, res) => {
     const userId = parseInt(req.params.userId);
     const userOccurrences = data.occurrences.filter((oc) => oc.user_id === userId);
-    console.log(userOccurrences);
+    // console.log(userOccurrences);
 
     if (!userOccurrences) {
         return res.status(400).json([]);
@@ -169,14 +169,13 @@ const getUsersOccurrences = (req, res) => {
 
 }
 
-
-const getOccurence = (req, res) => {
-    const occurrence =  data.occurrences.find(oc => oc.id === parseInt(req.body.id));
-    if(!occurrence) {
-        return res.json([]);
-    }
-    res.json(occurrence);
-}
+// const getOccurence = (req, res) => {
+//     const occurrence =  data.occurrences.find(oc => oc.id === parseInt(req.body.id));
+//     if(!occurrence) {
+//         return res.json([]);
+//     }
+//     res.json(occurrence);
+// }
 
 module.exports = {
     getAllOccurences, 
@@ -184,5 +183,5 @@ module.exports = {
     updateOccurence,
     deleteOccurrence,
     getUsersOccurrences,
-    getOccurence
+    // getOccurence
 }
